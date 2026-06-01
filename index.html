@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>嵐 ディスコグラフィー</title>
+<style>
+  :root{
+    --bg:#0d1b2a; --panel:#fff; --ink:#1b2a3a; --sub:#5a6b7b;
+    --accent:#2c6fb3; --accent2:#6aa0d4; --line:#e3e9ef; --chip:#eef4fa;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  section{scroll-margin-top:60px;}
+  body{
+    margin:0; font-family:"Hiragino Kaku Gothic ProN","Yu Gothic",Meiryo,sans-serif;
+    background:linear-gradient(160deg,#0d1b2a,#15324f); color:var(--ink);
+    -webkit-font-smoothing:antialiased;
+  }
+  header{
+    text-align:center; padding:42px 20px 30px; color:#fff;
+  }
+  header h1{margin:0; font-size:2.4rem; letter-spacing:.12em;}
+  header p{margin:8px 0 0; color:#a9c4de; font-size:.9rem; letter-spacing:.05em;}
+  nav{
+    position:sticky; top:0; z-index:10; background:rgba(13,27,42,.92);
+    backdrop-filter:blur(6px); display:flex; justify-content:center; gap:8px;
+    padding:10px; border-bottom:1px solid rgba(255,255,255,.08);
+  }
+  nav a{
+    color:#cfe0f0; text-decoration:none; font-size:.85rem; font-weight:600;
+    padding:7px 16px; border-radius:20px; transition:.2s;
+  }
+  nav a:hover{background:var(--accent); color:#fff;}
+  .wrap{max-width:760px; margin:0 auto; padding:28px 18px 60px;}
+  section{margin-bottom:48px;}
+  .sec-head{
+    color:#fff; font-size:1.5rem; font-weight:700; margin:0 0 4px;
+    display:flex; align-items:center; gap:12px;
+  }
+  .sec-head .count{
+    font-size:.8rem; background:var(--accent); color:#fff;
+    padding:3px 11px; border-radius:14px; font-weight:600;
+  }
+  .sec-note{color:#9fb8d0; font-size:.8rem; margin:0 0 18px;}
+  .cols{display:block;}
+  .card{
+    break-inside:avoid; background:var(--panel); border-radius:12px;
+    margin:0 0 18px; padding:16px 18px; box-shadow:0 4px 14px rgba(0,0,0,.18);
+    border-top:4px solid var(--accent);
+  }
+  .card.best{border-top-color:#c79a3a;}
+  .card .ttl{font-size:1.05rem; font-weight:700; line-height:1.35; margin:0;}
+  .card .date{color:var(--sub); font-size:.78rem; margin:4px 0 0;}
+  .tag{
+    display:inline-block; font-size:.68rem; font-weight:700; padding:2px 8px;
+    border-radius:10px; margin-bottom:6px; background:var(--chip); color:var(--accent);
+  }
+  .tag.best{background:#f6ecd2; color:#a87c1f;}
+  ol.tracks{margin:10px 0 0; padding-left:0; list-style:none; counter-reset:t;}
+  ol.tracks li{
+    counter-increment:t; font-size:.8rem; padding:3px 0 3px 26px;
+    position:relative; border-bottom:1px solid var(--line); line-height:1.4;
+  }
+  ol.tracks li:last-child{border-bottom:none;}
+  ol.tracks li::before{
+    content:counter(t,decimal-leading-zero); position:absolute; left:0; top:3px;
+    color:var(--accent2); font-size:.7rem; font-weight:700; font-variant-numeric:tabular-nums;
+  }
+  ol.tracks li .ex{color:#b0651f; font-size:.7rem; font-weight:600;}
+  .note{margin:10px 0 0; font-size:.72rem; color:var(--sub); line-height:1.5;
+    background:#f6f9fc; border-radius:7px; padding:7px 9px;}
+  .vid .ttl{font-size:.95rem;}
+  .vid .kind{font-size:.7rem; color:var(--accent); font-weight:700;}
+  .vid .desc{font-size:.76rem; color:var(--sub); margin:7px 0 0; line-height:1.5;}
+  footer{text-align:center; color:#8aa6c2; font-size:.74rem; padding:20px;}
+  footer a{color:#bcd3ea;}
+</style>
+</head>
+<body>
+<header>
+  <h1>嵐 DISCOGRAPHY</h1>
+  <p>アルバム・シングル・映像作品 完全一覧（初回限定盤カップリング・特別収録曲含む）</p>
+</header>
+<nav>
+  <a href="#albums">アルバム</a>
+  <a href="#singles">シングル</a>
+  <a href="#videos">映像作品</a>
+</nav>
+
+<div class="wrap">
+
+<!-- ALBUMS -->
+<section id="albums">
+  <h2 class="sec-head">アルバム <span class="count" id="album-count"></span></h2>
+  <p class="sec-note">★ボーナストラックや初回限定盤の差異は各カードの注釈に記載。<span style="color:#e0c376;">金色</span>＝ベストアルバム</p>
+  <div class="cols albums" id="album-cols"></div>
+</section>
+
+<!-- SINGLES -->
+<section id="singles">
+  <h2 class="sec-head">シングル <span class="count" id="single-count"></span></h2>
+  <p class="sec-note">表題曲＋カップリング曲。<span style="color:#d98a3a;">（限定/通常のみ）</span>＝特定の盤のみ収録。</p>
+  <div class="cols singles" id="single-cols"></div>
+</section>
+
+<!-- VIDEOS -->
+<section id="videos">
+  <h2 class="sec-head">映像作品 <span class="count" id="video-count"></span></h2>
+  <p class="sec-note">ライブ映像・MV集・ライブ映画。発売日順。</p>
+  <div class="cols videos" id="video-cols"></div>
+</section>
+
+</div>
+
+<footer>
+  出典: Wikipedia「嵐のディスコグラフィ」および各作品個別ページ・Storm Labels公式サイト・Oricon<br>
+  ※カップリング表記は初回限定盤／通常盤を統合し、特定盤のみの曲を注記しています。
+</footer>
+
+<script>
+const albums = [
+  {no:1,t:"ARASHI No.1 〜嵐は嵐を呼ぶ〜",d:"2001-01-24",best:false,tr:["Introduction 〜STORM〜","A・RA・SHI","DANGAN-LINER","SUNRISE日本","サワレナイ","感謝カンゲキ雨嵐","愛と勇気とチェリーパイ","Deepな冒険","helpless","On Sunday","野性を知りたい","アレルギー","ココロチラリ","台風ジェネレーション -Typhoon Generation-"],n:""},
+  {no:2,t:"HERE WE GO!",d:"2002-07-17",best:false,tr:["Theme of ARASHI","Easy Crazy Break Down","君は少しも悪くない","Tokyo Lovers Tune Night","a Day in Our Life","ALL or NOTHING Ver.1.02","眠らないカラダ","君はいないから","IROあせないで","愛してると言えない","星のFreeway","いま愛を語ろう","WOW!!","ナイスな心意気"],n:""},
+  {no:3,t:"How's it going?",d:"2003-07-09",best:false,tr:["とまどいながら(album version)","Crazy groundの王様","Lucky Man","身長差のない恋人","ONLY LOVE","嵐のまえの静けさ","Blue","Walking in the rain","パレット","できるだけ","テ・アゲロ","15th Moon","どんな言葉で","PIKA☆NCHI(album version)"],n:""},
+  {no:4,t:"いざッ、Now",d:"2004-07-21",best:false,tr:["言葉より大切なもの","JAM","The Bubble","Thank you for my days","PIKA★★NCHI DOUBLE","keep a peaK(instrumental)","EYES WITH DELIGHT","RIGHT BACK TO YOU","RAINBOW","ハダシの未来","優しくって少しバカ","Dear My Friend","君だけを想ってる","チェックのマフラー","途中下車"],n:"初回限定盤はボーナスDVD(ARASHI Best5CLIPS)付き。CD収録曲は両盤同一。"},
+  {no:5,t:"One",d:"2005-08-03",best:false,tr:["Overture","夏の名前","ROMANCE","Lai-Lai-Lai","Days","素晴らしき世界","サクラ咲ケ","Rain","いつかのSummer","W/ME","秘密","夢でいいから","Yes? No?",["風見鶏","通常盤のみ"]],n:"初回限定盤はDVD付き(風見鶏は非収録)。"},
+  {no:6,t:"ARASHIC",d:"2006-07-05",best:false,tr:["WISH","ランナウェイ・トレイン","Raise Your Hands","きっと大丈夫","Ready To Fly","キャラメル・ソング","COOL & SOUL","旅立ちの朝","I Want Somebody","Secret Eyes","超²ありがとう","CARNIVAL NIGHT part2","シルバーリング",["LOVE PARADE","通常盤のみ"]],n:"初回限定盤はDVD付き(LOVE PARADEは非収録)。"},
+  {no:7,t:"Time",d:"2007-07-11",best:false,tr:["Oh Yeah!","Love so sweet","WAVE","We can make it!","Firefly","太陽の世界","Carry on","ROCK YOU","Cry for you","Love Situation","風","Be with you","LIFE","アオゾラペダル",["Everybody前進","通常盤のみ"],["Song for me","初回盤Disc2"],["Friendship","初回盤Disc2"],["虹","初回盤Disc2"],["Can't Let You Go","初回盤Disc2"],["Yabai-Yabai-Yabai","初回盤Disc2"]],n:"初回限定盤Disc2にソロ曲5曲を収録。"},
+  {no:8,t:'Dream "A" live',d:"2008-04-23",best:false,tr:['theme of Dream "A" live',"Move your body","Happiness","虹の彼方へ","Do my best","シリウス","Flashback","Dive into the future","声","My Answer","Life goes on","Step and Go","YOUR SONG",["Once Again","通常盤のみ"],["Hello Goodbye","初回盤Disc2"],["Gimmick Game","初回盤Disc2"],["Take me faraway","初回盤Disc2"],["Naked","初回盤Disc2"],["Hip Pop Boogie","初回盤Disc2"]],n:"初回限定盤Disc2にソロ曲5曲を収録。"},
+  {no:9,t:"僕の見ている風景",d:"2010-08-04",best:false,tr:["movin' on","マダ上ヲ","リフレイン","Troublemaker","T.A.B.O.O","サーカス","ギフト","Everything","Come back to me","マイガール","Magical Song","let me down","Monster","Don't stop","静かな夜に","むかえに行くよ","1992*4##111","空高く","kagerô","Summer Splash!"],n:"CD2枚組。盤による収録曲の差はなし。"},
+  {no:10,t:"Beautiful World",d:"2011-07-06",best:false,tr:["Rock this","まだ見ぬ世界へ","Løve Rainbow","always","Shake it!","虹のカケラ〜no rain, no rainbow〜","Dear Snow","Hung up on","Joy","どこにでもある唄。","negai","Lotus","「じゃなくて」","morning light","To be free","このままもっと","果てない空","遠くまで",["エナジーソング〜絶好調超!!!!〜","セブンネット限定盤のみ"]],n:""},
+  {no:11,t:"Popcorn",d:"2012-10-31",best:false,tr:["Welcome to our party","駆け抜けろ！","ワイルド アット ハート","Face Down","We wanna funk, we need a funk","two","Waiting for you","楽園","旅は続くよ","それはやっぱり君でした","迷宮ラブソング","Your Eyes","Fly on Friday","Cosmos","証","Up to you"],n:""},
+  {no:12,t:"LOVE",d:"2013-10-23",best:false,tr:["愛を歌おう","サヨナラのあとで","CONFUSION","Hit the floor","P・A・R・A・D・O・X","sugar and salt","Breathless","20825日目の曲","Rock Tonight","Endless Game","Calling","夜空への手紙","Dance in the dark","Starlight kiss","FUNKY","Tears"],n:"CD収録曲は両盤共通。初回限定盤はDVD付き。"},
+  {no:13,t:"THE DIGITALIAN",d:"2014-10-22",best:false,tr:["Zero-G","Wonderful","Tell me why","Asterisk","Imaging Crazy","GUTS !","Disco Star","誰も知らない","TRAP","STAY GOLD","Bittersweet","メリークリスマス","キミの夢を見ていた","One Step","Hey Yeah!","Hope in the darkness",["Take Off!!!!!","通常盤のみ"]],n:"初回限定盤はDVD付き。"},
+  {no:14,t:"Japonism",d:"2015-10-21",best:false,tr:["Sakura","心の空","君への想い","Don't you love me?","miyabi-night","三日月","Bolero!","Mr. FUNK","暁","青空の下、キミのとなり","Rolling days","イン・ザ・ルーム","マスカレード","MUSIC","伝えたいこと","Japonesque",["僕らがつないでいく","通常盤Disc2"],["the Deep End","通常盤Disc2"],["Make a wish","通常盤Disc2"],["ふるさと","通常盤Disc2"],["日本よいとこ摩訶不思議","よいとこ盤のみ"]],n:"初回限定盤はDVD付き。「よいとこ盤」は少年隊カバー＋トークを収録。"},
+  {no:15,t:"Are You Happy?",d:"2016-10-26",best:false,tr:["DRIVE","I seek","Ups and Downs","青春ブギ","Sunshine","復活LOVE","Amore","Bad boy","WONDER-LOVE","また今日と同じ明日が来る","Daylight","愛を叫べ","Baby blue","Miles away","To my homies","Don't You Get It",["TWO TO TANGO","通常盤のみ"]],n:"初回限定盤はDVD付き。"},
+  {no:16,t:"「untitled」",d:"2017-10-18",best:false,tr:["Green Light","つなぐ","「未完」","Sugar","Power of the Paradise","ありのままで","風雲","I'll be there","抱擁","Pray","光","彼方へ","Song for you",["バズりNIGHT","通常盤Disc2"],["夜の影","通常盤Disc2"],["UB","通常盤Disc2"],["Come Back","通常盤Disc2"],["カンパイ・ソング","通常盤Disc2"]],n:"初回限定盤はDVD付き。Disc2はユニット曲＋ボーナストラック。"},
+  {no:17,t:"This is 嵐",d:"2020-11-03",best:false,tr:["SHOW TIME","Turning Up","I Can't Wait For Christmas","Whenever You Call","いつか秒針のあう頃","IN THE SUMMER","カイト","BRAVE","Party Starters","Do you... ?","The Music Never Ends",["Turning Up (R3HAB Remix)","初回限定盤のみ"],["A-RA-SHI : Reborn","初回限定盤のみ"],["a Day in Our Life : Reborn","初回限定盤のみ"],["One Love : Reborn","初回限定盤のみ"],["Love so sweet : Reborn","初回限定盤のみ"],["Face Down : Reborn","初回限定盤のみ"]],n:"初回限定盤はボーナスCD＋映像付き。"},
+  {bno:1,t:"嵐 Single Collection 1999-2001",d:"2002-05-16",best:true,tr:["A・RA・SHI","明日に向かって","SUNRISE日本","HORIZON","台風ジェネレーション -Typhoon Generation-","明日に向かって吠えろ","感謝カンゲキ雨嵐","OK! ALL RIGHT! いい恋をしよう","君のために僕がいる","はなさない!","時代","恋はブレッキー"],n:"ポニーキャニオン時代のシングル・カップリング曲集。"},
+  {bno:2,t:"5×5 THE BEST SELECTION OF 2002←2004",d:"2004-11-10",best:true,tr:["Hero","瞳の中のGalaxy","途中下車","RIGHT BACK TO YOU","PIKA★★NCHI DOUBLE","言葉より大切なもの","ハダシの未来","Lucky Man","Blue","とまどいながら","冬のニオイ","PIKA☆NCHI","眠らないカラダ","ナイスな心意気","a Day in Our Life",["La tormenta 2004","通常盤のみ"]],n:"新しい順に収録。"},
+  {bno:3,t:"5×10 All the BEST! 1999-2009",d:"2009-08-19",best:true,tr:["A・RA・SHI","SUNRISE日本","HORIZON","台風ジェネレーション -Typhoon Generation-","感謝カンゲキ雨嵐","君のために僕がいる","時代","a Day in Our Life","ナイスな心意気","PIKA☆NCHI","とまどいながら","ハダシの未来","言葉より大切なもの","PIKA★★NCHI DOUBLE","瞳の中のGalaxy","Hero","サクラ咲ケ","WISH","きっと大丈夫","アオゾラペダル","Love so sweet","We can make it!","Happiness","Step and Go","One Love","truth","風の向こうへ","Beautiful days","Believe","明日の記憶","Crazy Moon〜キミ・ハ・ムテキ〜","5×10"],n:"2枚組。「5×10」は新曲。"},
+  {bno:4,t:"5×20 All the BEST!! 1999-2019",d:"2019-06-26",best:true,tr:["A・RA・SHI","SUNRISE日本","HORIZON","台風ジェネレーション -Typhoon Generation-","感謝カンゲキ雨嵐","君のために僕がいる","時代","a Day in Our Life","ナイスな心意気","PIKA☆NCHI","とまどいながら","ハダシの未来","言葉より大切なもの","PIKA★★NCHI DOUBLE","瞳の中のGalaxy","Hero","サクラ咲ケ","WISH","きっと大丈夫","アオゾラペダル","Love so sweet","We can make it!","Happiness","Step and Go","One Love","truth","風の向こうへ","Beautiful days","Believe","明日の記憶","Crazy Moon〜キミ・ハ・ムテキ〜","Everything","マイガール","Troublemaker","Monster","To be free","Løve Rainbow","Dear Snow","果てない空","Lotus","迷宮ラブソング","ワイルド アット ハート","Face Down","Your Eyes","Calling","Breathless","Endless Game","Bittersweet","GUTS !","誰も知らない","Sakura","青空の下、キミのとなり","愛を叫べ","復活LOVE","I seek","Daylight","Power of the Paradise","I'll be there","つなぐ","Doors 〜勇気の軌跡〜","Find The Answer","夏疾風","君のうた","5×20"],n:"4枚組(計64曲)。「5×20」は新曲。"}
+];
+
+const singles = [
+  {no:1,t:"A・RA・SHI",d:"1999-11-03",tr:["A・RA・SHI","明日に向かって"]},
+  {no:2,t:"SUNRISE日本/HORIZON",d:"2000-04-05",tr:["SUNRISE日本","HORIZON"]},
+  {no:3,t:"台風ジェネレーション -Typhoon Generation-",d:"2000-07-12",tr:["台風ジェネレーション -Typhoon Generation-","明日に向かって吠えろ"]},
+  {no:4,t:"感謝カンゲキ雨嵐",d:"2000-11-08",tr:["感謝カンゲキ雨嵐","OK! ALL RIGHT! いい恋をしよう"]},
+  {no:5,t:"君のために僕がいる",d:"2001-04-18",tr:["君のために僕がいる","はなさない!"]},
+  {no:6,t:"時代",d:"2001-08-01",tr:["時代","恋はブレッキー"]},
+  {no:7,t:"a Day in Our Life",d:"2002-02-06",tr:["a Day in Our Life"]},
+  {no:8,t:"ナイスな心意気",d:"2002-04-17",tr:["ナイスな心意気"]},
+  {no:9,t:"PIKA☆NCHI",d:"2002-10-17",tr:["PIKA☆NCHI","道"]},
+  {no:10,t:"とまどいながら",d:"2003-02-13",tr:["とまどいながら","冬のニオイ","君がいいんだ","コイゴコロ"]},
+  {no:11,t:"ハダシの未来/言葉より大切なもの",d:"2003-09-03",tr:["ハダシの未来","言葉より大切なもの"]},
+  {no:12,t:"PIKA★★NCHI DOUBLE",d:"2004-02-18",tr:["PIKA★★NCHI DOUBLE","五里霧中","道 DOUBLE Ver."]},
+  {no:13,t:"瞳の中のGalaxy/Hero",d:"2004-08-18",tr:["瞳の中のGalaxy","Hero",["Hey Hey Lovin' You","通常盤のみ"]]},
+  {no:14,t:"サクラ咲ケ",d:"2005-03-23",tr:["サクラ咲ケ","手つなごぉ"]},
+  {no:15,t:"WISH",d:"2005-11-16",tr:["WISH","イチオクノホシ",["二人の記念日","初回限定盤のみ"]]},
+  {no:16,t:"きっと大丈夫",d:"2006-05-17",tr:["きっと大丈夫","春風スニーカー",["NA! NA! NA!!","通常盤のみ"]]},
+  {no:17,t:"アオゾラペダル",d:"2006-08-02",tr:["アオゾラペダル","Kissからはじめよう",["夏の終わりに想うこと","通常盤のみ"]]},
+  {no:18,t:"Love so sweet",d:"2007-02-21",tr:["Love so sweet","いつまでも",["ファイトソング","初回限定盤のみ"]]},
+  {no:19,t:"We can make it!",d:"2007-05-02",tr:["We can make it!","Di-Li-Li",["Future","初回限定盤のみ"]]},
+  {no:20,t:"Happiness",d:"2007-09-05",tr:["Happiness","Still...",["Snowflake","初回限定盤のみ"]]},
+  {no:21,t:"Step and Go",d:"2008-02-20",tr:["Step and Go",["冬を抱きしめて","通常盤のみ"],["COOL & SOUL for DOME07","特別盤のみ"]]},
+  {no:22,t:"One Love",d:"2008-06-25",tr:["One Love",["How to fly","通常盤のみ"],["FINAL Remix","初回限定盤のみ"]]},
+  {no:23,t:"truth/風の向こうへ",d:"2008-08-20",tr:["truth","風の向こうへ",["スマイル","通常盤のみ"]]},
+  {no:24,t:"Beautiful days",d:"2008-11-05",tr:["Beautiful days","僕が僕のすべて",["忘れられない","通常盤のみ"]]},
+  {no:25,t:"Believe/曇りのち、快晴",d:"2009-03-04",tr:["Believe","曇りのち、快晴",["トビラ","初回1・通常盤のみ"]]},
+  {no:26,t:"明日の記憶/Crazy Moon〜キミ・ハ・ムテキ〜",d:"2009-05-27",tr:["明日の記憶","Crazy Moon〜キミ・ハ・ムテキ〜"]},
+  {no:27,t:"Everything",d:"2009-07-01",tr:["Everything","season"]},
+  {no:28,t:"マイガール",d:"2009-11-11",tr:["マイガール","時計じかけのアンブレラ",["スーパーフレッシュ","通常盤のみ"]]},
+  {no:29,t:"Troublemaker",d:"2010-03-03",tr:["Troublemaker","揺らせ、今を",["もう一歩","通常盤のみ"]]},
+  {no:30,t:"Monster",d:"2010-05-19",tr:["Monster","スパイラル"]},
+  {no:31,t:"To be free",d:"2010-07-07",tr:["To be free"]},
+  {no:32,t:"Løve Rainbow",d:"2010-09-08",tr:["Løve Rainbow","over"]},
+  {no:33,t:"Dear Snow",d:"2010-10-06",tr:["Dear Snow",["タイムカプセル","通常盤のみ"]]},
+  {no:34,t:"果てない空",d:"2010-11-10",tr:["果てない空","あの日のメリークリスマス",["STORY","通常盤のみ"],["maboroshi","通常盤のみ"]]},
+  {no:35,t:"Lotus",d:"2011-02-23",tr:["Lotus","ever",["Boom Boom","通常盤のみ"]]},
+  {no:36,t:"迷宮ラブソング",d:"2011-11-02",tr:["迷宮ラブソング",["together, forever","通常盤のみ"],["うたかた","通常盤のみ"],["wanna be...","通常盤のみ"],["消えぬ想い","初回限定盤のみ"]]},
+  {no:37,t:"ワイルド アット ハート",d:"2012-03-07",tr:["ワイルド アット ハート",["ついておいで","通常盤のみ"],["ふたりのカタチ","通常盤のみ"],["How Can I Love","初回限定盤のみ"]]},
+  {no:38,t:"Face Down",d:"2012-05-09",tr:["Face Down",["目指した未来へ","通常盤のみ"],["ひとりじゃないさ","初回限定盤のみ"]]},
+  {no:39,t:"Your Eyes",d:"2012-06-06",tr:["Your Eyes",["花火","通常盤のみ"],["voice","通常盤のみ"],["君がいるから","初回限定盤のみ"]]},
+  {no:40,t:"Calling/Breathless",d:"2013-03-06",tr:["Calling","Breathless",["オーライ!!","初回A・通常のみ"],["full of love","初回A・通常のみ"]]},
+  {no:41,t:"Endless Game",d:"2013-05-29",tr:["Endless Game",["Magic hour","初回限定盤のみ"],["Intergalactic","通常盤のみ"],["モノクロ","通常盤のみ"]]},
+  {no:42,t:"Bittersweet",d:"2014-02-12",tr:["Bittersweet","Road to Glory",["Sync","通常盤のみ"],["もっと、いまより","通常盤のみ"]]},
+  {no:43,t:"GUTS !",d:"2014-04-30",tr:["GUTS !",["君が笑えるように","通常盤のみ"],["Love Wonderland","通常盤のみ"],["Fly","初回限定盤のみ"]]},
+  {no:44,t:"誰も知らない",d:"2014-05-28",tr:["誰も知らない","Keep on tryin'","ミラクル・サマー",["おかえり","初回限定盤のみ"]]},
+  {no:45,t:"Sakura",d:"2015-02-25",tr:["Sakura",["同じ空の下で","通常盤のみ"],"more and more",["Rise and Shine","初回限定盤のみ"]]},
+  {no:46,t:"青空の下、キミのとなり",d:"2015-05-13",tr:["青空の下、キミのとなり",["この手のひらに","通常盤のみ"],["何度だって","通常盤のみ"],["Dandelion","初回限定盤のみ"]]},
+  {no:47,t:"愛を叫べ",d:"2015-09-02",tr:["愛を叫べ","It's good to be bad","ユメニカケル","I say",["Mr. Lonely","初回限定盤のみ"]]},
+  {no:48,t:"復活LOVE",d:"2016-02-24",tr:["復活LOVE",["愛のCollection","通常盤のみ"],["Bang Bang","通常盤のみ"],["Are you ready now?","通常盤のみ"],["affection","初回限定盤のみ"]]},
+  {no:49,t:"I seek/Daylight",d:"2016-05-18",tr:["I seek","Daylight",["ただいま","通常盤のみ"],["supersonic","通常盤のみ"]]},
+  {no:50,t:"Power of the Paradise",d:"2016-09-14",tr:["Power of the Paradise",["花","通常盤のみ"]]},
+  {no:51,t:"I'll be there",d:"2017-04-19",tr:["I'll be there",["unknown","通常盤のみ"],["Treasure of life","通常盤のみ"],["Round and Round","初回限定盤のみ"]]},
+  {no:52,t:"つなぐ",d:"2017-06-28",tr:["つなぐ",["Reach for the sky 〜天までとどけ〜","通常盤のみ"],["抱きしめたい","通常盤のみ"],["Under the radar","通常盤のみ"],["お気に召すまま","初回限定盤のみ"]]},
+  {no:53,t:"Doors 〜勇気の軌跡〜",d:"2017-11-08",tr:["Doors 〜勇気の軌跡〜",["NOW or NEVER","初回2・通常のみ"],["Perfect Night","通常盤のみ"],["BORDER","通常盤のみ"],["Winter days","初回1のみ"]]},
+  {no:54,t:"Find The Answer",d:"2018-02-21",tr:["Find The Answer",["Circle","通常盤のみ"],["Bounce Beat","通常盤のみ"],["白が舞う","通常盤のみ"],["街角の恋人たち","初回限定盤のみ"]]},
+  {no:55,t:"夏疾風",d:"2018-07-25",tr:["夏疾風",["Midsummer Night's Lover","通常盤のみ"],["Sparkle","通常盤のみ"],["After the rain","初回限定盤のみ"]]},
+  {no:56,t:"君のうた",d:"2018-10-24",tr:["君のうた",["Sky Again","通常盤のみ"],["Fake it","通常盤のみ"],["Count on me","通常盤のみ"],["White On White","初回限定盤のみ"]]},
+  {no:57,t:"BRAVE",d:"2019-09-11",tr:["BRAVE"]},
+  {no:58,t:"カイト",d:"2020-07-29",tr:["カイト",["Journey to Harmony","通常盤のみ"],["Sounds of Joy","通常盤のみ"],["僕らの日々","通常盤のみ"]]},
+  {no:59,t:"Five",d:"2026-05-31",tr:["Five"]}
+];
+
+const videos = [
+  {t:"スッピンアラシ",d:"2000-06-28",k:"ライブ",x:"初期のライブ・パフォーマンス映像作品(VHS)。"},
+  {t:"ALL or NOTHING",d:"2002-06-12",k:"ライブ",x:"コンサートツアーの模様を収録。"},
+  {t:"How's it going? SUMMER CONCERT 2003",d:"2003-12-17",k:"ライブ",x:"サマーコンサート2003のライブ映像。"},
+  {t:"2004 嵐!いざッ、Now Tour!!",d:"2005-01-01",k:"ライブ",x:"2004年のツアーを収録。"},
+  {t:"ARASHI AROUND ASIA Thailand-Taiwan-Korea",d:"2007-05-23",k:"ライブ",x:"アジアツアー(タイ・台湾・韓国)を収録。"},
+  {t:"ARASHI AROUND ASIA+ in DOME",d:"2007-10-17",k:"ライブ",x:"AROUND ASIAツアーのドーム公演。"},
+  {t:"SUMMER TOUR 2007 FINAL Time -コトバノチカラ-",d:"2008-04-16",k:"ライブ",x:"サマーツアー2007のファイナル公演。"},
+  {t:"ARASHI AROUND ASIA 2008 in TOKYO",d:"2009-03-25",k:"ライブ",x:"AROUND ASIA 2008の東京公演。"},
+  {t:"ARASHI Anniversary Tour 5×10",d:"2010-04-07",k:"ライブ",x:"デビュー10周年記念アニバーサリーツアー。"},
+  {t:'ARASHI 10-11 TOUR "Scene" STADIUM',d:"2011-01-26",k:"ライブ",x:"「Scene〜君と僕の見ている風景〜」スタジアム公演。"},
+  {t:'ARASHI 10-11 TOUR "Scene" DOME+',d:"2011-06-15",k:"ライブ",x:"「Scene〜君と僕の見ている風景〜」ドーム公演ほか。"},
+  {t:"ARASHI LIVE TOUR Beautiful World",d:"2012-05-23",k:"ライブ",x:"ツアー「Beautiful World」を収録。"},
+  {t:"ARASHI アラフェス NATIONAL STADIUM 2012",d:"2012-12-26",k:"ライブ",x:"国立競技場「アラフェス」2012を収録。"},
+  {t:"ARASHI LIVE TOUR Popcorn",d:"2013-04-24",k:"ライブ",x:"ツアー「Popcorn」を収録。"},
+  {t:"ARASHI アラフェス'13 NATIONAL STADIUM 2013",d:"2014-05-21",k:"ライブ",x:"国立競技場「アラフェス'13」(初のBD作品)。"},
+  {t:'ARASHI Live Tour 2013 "LOVE"',d:"2014-07-30",k:"ライブ",x:"ツアー「LOVE」を収録。"},
+  {t:"ARASHI BLAST in Hawaii",d:"2015-04-15",k:"ライブ",x:"デビュー15周年記念ハワイ公演。"},
+  {t:"ARASHI LIVE TOUR 2014 THE DIGITALIAN",d:"2015-07-29",k:"ライブ",x:"ツアー「THE DIGITALIAN」を収録。"},
+  {t:"ARASHI BLAST in Miyagi",d:"2016-01-01",k:"ライブ",x:"宮城公演「BLAST in Miyagi」を収録。"},
+  {t:"ARASHI LIVE TOUR 2015 Japonism",d:"2016-08-24",k:"ライブ",x:"ツアー「Japonism」を収録。"},
+  {t:"ARASHI LIVE TOUR 2016-2017 Are You Happy?",d:"2017-05-31",k:"ライブ",x:"ツアー「Are You Happy?」を収録。"},
+  {t:"ARASHI LIVE TOUR 2017-2018 「untitled」",d:"2018-06-13",k:"ライブ",x:"ツアー「untitled」を収録。"},
+  {t:"ARASHI Anniversary Tour 5×20",d:"2020-09-30",k:"ライブ",x:"デビュー20周年記念アニバーサリーツアー。"},
+  {t:"アラフェス2020 at 国立競技場",d:"2021-07-28",k:"ライブ",x:"新国立競技場での「アラフェス2020」。"},
+  {t:"This is 嵐 LIVE 2020.12.31",d:"2021-12-29",k:"ライブ",x:"大晦日に配信された活動休止前ライブ。"},
+  {t:"5×10 All the BEST! CLIPS 1999-2009",d:"2009-10-28",k:"MV集",x:"デビュー10周年記念ミュージック・ビデオ集。"},
+  {t:"5×20 All the BEST!! CLIPS 1999-2019",d:"2019-10-16",k:"MV集",x:"デビュー20周年記念ミュージック・ビデオ集。"},
+  {t:'ARASHI Anniversary Tour 5×20 FILM "Record of Memories"',d:"2022-09-15",k:"ライブ映画",x:"「5×20」ツアーを映画化(Blu-ray/UHD BD)。"}
+];
+
+function esc(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+function trackLi(t){
+  if(Array.isArray(t)) return `<li>${esc(t[0])} <span class="ex">（${esc(t[1])}）</span></li>`;
+  return `<li>${esc(t)}</li>`;
+}
+
+document.getElementById('album-cols').innerHTML = albums.slice().sort((a,b)=>b.d.localeCompare(a.d)).map(a=>`
+  <div class="card${a.best?' best':''}">
+    <span class="tag${a.best?' best':''}">${a.best?'BEST #'+a.bno:'ALBUM #'+a.no}</span>
+    <p class="ttl">${esc(a.t)}</p>
+    <p class="date">${a.d}</p>
+    <ol class="tracks">${a.tr.map(trackLi).join('')}</ol>
+    ${a.n?`<p class="note">${esc(a.n)}</p>`:''}
+  </div>`).join('');
+
+document.getElementById('single-cols').innerHTML = singles.slice().reverse().map(s=>`
+  <div class="card">
+    <span class="tag">#${s.no}</span>
+    <p class="ttl">${esc(s.t)}</p>
+    <p class="date">${s.d}</p>
+    <ol class="tracks">${s.tr.map(trackLi).join('')}</ol>
+  </div>`).join('');
+
+document.getElementById('video-cols').innerHTML = videos.slice().sort((a,b)=>b.d.localeCompare(a.d)).map(v=>`
+  <div class="card vid">
+    <span class="kind">${esc(v.k)}</span>
+    <p class="ttl">${esc(v.t)}</p>
+    <p class="date">${v.d}</p>
+    <p class="desc">${esc(v.x)}</p>
+  </div>`).join('');
+
+document.getElementById('album-count').textContent = albums.length + '作';
+document.getElementById('single-count').textContent = singles.length + '作';
+document.getElementById('video-count').textContent = videos.length + '作';
+</script>
+</body>
+</html>
