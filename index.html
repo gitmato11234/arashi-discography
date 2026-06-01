@@ -32,6 +32,34 @@
     padding:7px 16px; border-radius:20px; transition:.2s;
   }
   nav a:hover{background:var(--accent); color:#fff;}
+  .search{position:relative; margin-left:auto; display:flex; align-items:center;}
+  .search input{
+    width:200px; max-width:44vw; padding:7px 12px; border-radius:18px; border:none;
+    font-size:.85rem; background:#22384f; color:#fff; outline:none;
+  }
+  .search input::placeholder{color:#8fa9c2;}
+  .search input:focus{background:#2c4a68;}
+  #results{
+    position:absolute; top:42px; right:0; width:340px; max-width:88vw;
+    background:#fff; border-radius:12px; box-shadow:0 10px 30px rgba(0,0,0,.4);
+    max-height:60vh; overflow-y:auto; display:none; z-index:30; padding:6px;
+  }
+  #results.show{display:block;}
+  #results .rhead{font-size:.72rem; color:var(--sub); padding:6px 10px 4px;}
+  #results button{
+    display:block; width:100%; text-align:left; border:none; background:transparent;
+    padding:9px 10px; border-radius:8px; cursor:pointer; color:var(--ink);
+    border-bottom:1px solid var(--line);
+  }
+  #results button:last-child{border-bottom:none;}
+  #results button:hover{background:var(--chip);}
+  #results .rsong{font-size:.86rem; font-weight:700;}
+  #results .rsong .qmark{background:#ffe58a; border-radius:3px;}
+  #results .rctx{font-size:.72rem; color:var(--sub); margin-top:2px;}
+  #results .rnone{padding:12px 10px; color:var(--sub); font-size:.8rem;}
+  @keyframes flash{0%{background:#fff3b0;}100%{background:transparent;}}
+  ol.tracks li.hl{animation:flash 2.4s ease-out; border-radius:5px;}
+  .card.hlcard{box-shadow:0 0 0 3px var(--accent),0 4px 14px rgba(0,0,0,.18);}
   .wrap{max-width:760px; margin:0 auto; padding:28px 18px 60px;}
   section{margin-bottom:48px;}
   .sec-head{
@@ -89,6 +117,10 @@
   <a href="#singles">シングル</a>
   <a href="#digital">配信限定</a>
   <a href="#videos">映像作品</a>
+  <div class="search">
+    <input id="q" type="search" placeholder="🔍 曲名で検索" autocomplete="off">
+    <div id="results"></div>
+  </div>
 </nav>
 
 <div class="wrap">
@@ -258,12 +290,18 @@ const digital = [
 ];
 
 function esc(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
-function trackLi(t){
+
+const SEARCH = [];
+let _tid = 0;
+function trackLi(t, ctx){
+  const name = Array.isArray(t) ? t[0] : t;
+  const id = 't' + (_tid++);
+  SEARCH.push({name, ctx, id});
   if(Array.isArray(t)){
     const cls = (t[2]==='mem'||t[2]==='unit') ? t[2] : 'ex';
-    return `<li>${esc(t[0])} <span class="${cls}">（${esc(t[1])}）</span></li>`;
+    return `<li id="${id}">${esc(t[0])} <span class="${cls}">（${esc(t[1])}）</span></li>`;
   }
-  return `<li>${esc(t)}</li>`;
+  return `<li id="${id}">${esc(t)}</li>`;
 }
 
 document.getElementById('album-cols').innerHTML = albums.slice().sort((a,b)=>b.d.localeCompare(a.d)).map(a=>`
@@ -271,7 +309,7 @@ document.getElementById('album-cols').innerHTML = albums.slice().sort((a,b)=>b.d
     <span class="tag${a.best?' best':''}">${a.best?'BEST #'+a.bno:'ALBUM #'+a.no}</span>
     <p class="ttl">${esc(a.t)}</p>
     <p class="date">${a.d}</p>
-    <ol class="tracks">${a.tr.map(trackLi).join('')}</ol>
+    <ol class="tracks">${a.tr.map(t=>trackLi(t, (a.best?'BEST #'+a.bno:'ALBUM #'+a.no)+' '+a.t)).join('')}</ol>
     ${a.n?`<p class="note">${esc(a.n)}</p>`:''}
   </div>`).join('');
 
@@ -280,16 +318,19 @@ document.getElementById('single-cols').innerHTML = singles.slice().reverse().map
     <span class="tag">#${s.no}</span>
     <p class="ttl">${esc(s.t)}</p>
     <p class="date">${s.d}</p>
-    <ol class="tracks">${s.tr.map(trackLi).join('')}</ol>
+    <ol class="tracks">${s.tr.map(t=>trackLi(t, 'シングル #'+s.no+' '+s.t)).join('')}</ol>
   </div>`).join('');
 
-document.getElementById('digital-cols').innerHTML = digital.slice().sort((a,b)=>b.d.localeCompare(a.d)).map(s=>`
-  <div class="card vid">
+document.getElementById('digital-cols').innerHTML = digital.slice().sort((a,b)=>b.d.localeCompare(a.d)).map((s,i)=>{
+  const id='d'+i; SEARCH.push({name:s.t, ctx:'配信限定シングル', id});
+  return `
+  <div class="card vid" id="${id}">
     <span class="kind">DIGITAL</span>
     <p class="ttl">${esc(s.t)}</p>
     <p class="date">${s.d}</p>
     <p class="desc">${esc(s.x)}</p>
-  </div>`).join('');
+  </div>`;
+}).join('');
 
 document.getElementById('video-cols').innerHTML = videos.slice().sort((a,b)=>b.d.localeCompare(a.d)).map(v=>`
   <div class="card vid">
@@ -303,6 +344,54 @@ document.getElementById('album-count').textContent = albums.length + '作';
 document.getElementById('single-count').textContent = singles.length + '作';
 document.getElementById('digital-count').textContent = digital.length + '作';
 document.getElementById('video-count').textContent = videos.length + '作';
+
+/* ===== 曲名検索 ===== */
+const q = document.getElementById('q');
+const results = document.getElementById('results');
+let hlTimer = null;
+
+function jumpTo(id){
+  const el = document.getElementById(id);
+  if(!el) return;
+  el.scrollIntoView({behavior:'smooth', block:'center'});
+  const card = el.closest('.card');
+  clearTimeout(hlTimer);
+  document.querySelectorAll('.hl').forEach(e=>e.classList.remove('hl'));
+  document.querySelectorAll('.hlcard').forEach(e=>e.classList.remove('hlcard'));
+  if(el.tagName==='LI'){ void el.offsetWidth; el.classList.add('hl'); }
+  if(card){ card.classList.add('hlcard'); }
+  hlTimer = setTimeout(()=>{ if(card) card.classList.remove('hlcard'); }, 2600);
+}
+
+function runSearch(){
+  const term = q.value.trim().toLowerCase();
+  if(!term){ results.classList.remove('show'); results.innerHTML=''; return; }
+  const hits = SEARCH.filter(s=> s.name.toLowerCase().includes(term)).slice(0, 40);
+  if(!hits.length){
+    results.innerHTML = `<div class="rnone">「${esc(q.value.trim())}」に一致する曲はありません</div>`;
+    results.classList.add('show'); return;
+  }
+  const re = new RegExp('('+term.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')+')','ig');
+  results.innerHTML =
+    `<div class="rhead">${hits.length}件${hits.length>=40?'以上':''}</div>` +
+    hits.map(h=>{
+      const mark = esc(h.name).replace(re,'<span class="qmark">$1</span>');
+      return `<button data-id="${h.id}"><div class="rsong">${mark}</div><div class="rctx">${esc(h.ctx)}</div></button>`;
+    }).join('');
+  results.classList.add('show');
+}
+
+q.addEventListener('input', runSearch);
+q.addEventListener('focus', ()=>{ if(q.value.trim()) runSearch(); });
+results.addEventListener('click', e=>{
+  const b = e.target.closest('button[data-id]');
+  if(!b) return;
+  results.classList.remove('show');
+  jumpTo(b.dataset.id);
+});
+document.addEventListener('click', e=>{
+  if(!e.target.closest('.search')) results.classList.remove('show');
+});
 </script>
 </body>
 </html>
