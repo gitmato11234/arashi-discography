@@ -7,7 +7,7 @@
 <style>
   :root{
     --bg:#0d1b2a; --panel:#fff; --ink:#1b2a3a; --sub:#5a6b7b;
-    --accent:#2c6fb3; --accent2:#6aa0d4; --line:#e3e9ef; --chip:#eef4fa;
+    --accent:#45566b; --accent2:#7e90a6; --line:#e3e9ef; --chip:#eef1f5;
   }
   *{box-sizing:border-box;}
   html{scroll-behavior:smooth;}
@@ -79,14 +79,14 @@
     margin:0 0 18px; padding:16px 18px; box-shadow:0 4px 14px rgba(0,0,0,.18);
     border-top:4px solid var(--accent);
   }
-  .card.best{border-top-color:#c79a3a;}
+  .card.best{border-top-color:#9a7b5a;}
   .card .ttl{font-size:1.05rem; font-weight:700; line-height:1.35; margin:0;}
   .card .date{color:var(--sub); font-size:.78rem; margin:4px 0 0;}
   .tag{
     display:inline-block; font-size:.68rem; font-weight:700; padding:2px 8px;
     border-radius:10px; margin-bottom:6px; background:var(--chip); color:var(--accent);
   }
-  .tag.best{background:#f6ecd2; color:#a87c1f;}
+  .tag.best{background:#ece1d3; color:#7a5d3f;}
   ol.tracks{margin:10px 0 0; padding-left:0; list-style:none; counter-reset:t;}
   ol.tracks li{
     counter-increment:t; font-size:.8rem; padding:3px 0 3px 26px;
@@ -98,8 +98,8 @@
     color:var(--accent2); font-size:.7rem; font-weight:700; font-variant-numeric:tabular-nums;
   }
   ol.tracks li .ex{color:#b0651f; font-size:.7rem; font-weight:600;}
-  ol.tracks li .mem{color:#0d9488; font-size:.7rem; font-weight:700;}
-  ol.tracks li .unit{color:#db2777; font-size:.7rem; font-weight:700;}
+  ol.tracks li .mem{color:#5f7896; font-size:.7rem; font-weight:700;}
+  ol.tracks li .unit{color:#b56b82; font-size:.7rem; font-weight:700;}
   .note{margin:10px 0 0; font-size:.72rem; color:var(--sub); line-height:1.5;
     background:#f6f9fc; border-radius:7px; padding:7px 9px;}
   .vid .ttl{font-size:.95rem;}
@@ -116,7 +116,7 @@
   .card details ol.tracks{margin-top:8px;}
   .dtag{font-size:.66rem; background:#e2e8f0; color:#475569; padding:2px 7px; border-radius:10px; margin-left:5px; font-weight:700;}
   ol.tracks li.medleyhead{font-weight:700;}
-  .mtag{font-size:.64rem; background:#dceafe; color:#2c6fb3; padding:1px 7px; border-radius:9px; margin-left:6px; font-weight:700; white-space:nowrap;}
+  .mtag{font-size:.64rem; background:#e3e7ed; color:#45566b; padding:1px 7px; border-radius:9px; margin-left:6px; font-weight:700; white-space:nowrap;}
   ol.medley{list-style:none; margin:6px 0 2px; padding-left:12px; border-left:2px dashed #b9c9d8;}
   ol.medley li{font-size:.76rem; font-weight:400; color:#4a5b6b; padding:2px 0 2px 18px; position:relative; border:none;}
   ol.medley li::before{content:"♪"; position:absolute; left:0; top:2px; color:#9bb0c4; font-size:.7rem; font-weight:400;}
@@ -146,7 +146,7 @@
 <!-- ALBUMS -->
 <section id="albums">
   <h2 class="sec-head">アルバム <span class="count" id="album-count"></span></h2>
-  <p class="sec-note">注記の色 — <span style="color:#d98a3a;">橙＝盤・収録の差異</span>／<span style="color:#0d9488;">ティール＝ソロ曲(メンバー名)</span>／<span style="color:#db2777;">ピンク＝ユニット曲</span>。<span style="color:#e0c376;">金色のカード</span>＝ベストアルバム</p>
+  <p class="sec-note">注記の色 — <span style="color:#c47f33;">●盤・収録の差異</span>／<span style="color:#5f7896;">●ソロ曲(メンバー名)</span>／<span style="color:#b56b82;">●ユニット曲</span>。<span style="color:#9a7b5a;">●この色の枠のカード</span>＝ベストアルバム</p>
   <div class="cols albums" id="album-cols"></div>
 </section>
 
