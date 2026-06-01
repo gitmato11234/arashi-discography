@@ -98,8 +98,8 @@
     color:var(--accent2); font-size:.7rem; font-weight:700; font-variant-numeric:tabular-nums;
   }
   ol.tracks li .ex{color:#b0651f; font-size:.7rem; font-weight:600;}
-  ol.tracks li .mem{color:#1f8a70; font-size:.7rem; font-weight:700;}
-  ol.tracks li .unit{color:#8a4f9e; font-size:.7rem; font-weight:700;}
+  ol.tracks li .mem{color:#0d9488; font-size:.7rem; font-weight:700;}
+  ol.tracks li .unit{color:#db2777; font-size:.7rem; font-weight:700;}
   .note{margin:10px 0 0; font-size:.72rem; color:var(--sub); line-height:1.5;
     background:#f6f9fc; border-radius:7px; padding:7px 9px;}
   .vid .ttl{font-size:.95rem;}
@@ -114,7 +114,7 @@
   .card details summary::before{content:"▶ "; font-size:.6rem;}
   .card details[open] summary::before{content:"▼ ";}
   .card details ol.tracks{margin-top:8px;}
-  .dtag{font-size:.66rem; background:#e7d9f3; color:#7a3fa0; padding:2px 7px; border-radius:10px; margin-left:5px; font-weight:700;}
+  .dtag{font-size:.66rem; background:#e2e8f0; color:#475569; padding:2px 7px; border-radius:10px; margin-left:5px; font-weight:700;}
   ol.tracks li.medleyhead{font-weight:700;}
   .mtag{font-size:.64rem; background:#dceafe; color:#2c6fb3; padding:1px 7px; border-radius:9px; margin-left:6px; font-weight:700; white-space:nowrap;}
   ol.medley{list-style:none; margin:6px 0 2px; padding-left:12px; border-left:2px dashed #b9c9d8;}
@@ -146,14 +146,14 @@
 <!-- ALBUMS -->
 <section id="albums">
   <h2 class="sec-head">アルバム <span class="count" id="album-count"></span></h2>
-  <p class="sec-note">注記の色 — <span style="color:#d98a3a;">橙＝盤・収録の差異</span>／<span style="color:#3fae93;">緑＝ソロ曲(メンバー名)</span>／<span style="color:#b07ac4;">紫＝ユニット曲</span>。<span style="color:#e0c376;">金色のカード</span>＝ベストアルバム</p>
+  <p class="sec-note">注記の色 — <span style="color:#d98a3a;">橙＝盤・収録の差異</span>／<span style="color:#0d9488;">ティール＝ソロ曲(メンバー名)</span>／<span style="color:#db2777;">ピンク＝ユニット曲</span>。<span style="color:#e0c376;">金色のカード</span>＝ベストアルバム</p>
   <div class="cols albums" id="album-cols"></div>
 </section>
 
 <!-- SINGLES (CD + 配信限定) -->
 <section id="singles">
   <h2 class="sec-head">シングル <span class="count" id="single-count"></span></h2>
-  <p class="sec-note">CDシングル（#番号）と<span style="color:#b07ac4;">配信限定シングル（#配信限定）</span>を発売順で統合。表題曲＋カップリング曲。最新順。</p>
+  <p class="sec-note">CDシングル（#番号）と<span style="color:#475569; font-weight:700;">配信限定シングル（#配信限定）</span>を発売順で統合。表題曲＋カップリング曲。最新順。</p>
   <div class="cols" id="single-cols"></div>
 </section>
 
@@ -331,7 +331,7 @@ document.getElementById('album-cols').innerHTML = albums.slice().sort((a,b)=>b.d
     <span class="tag${a.best?' best':''}">${a.best?'BEST #'+a.bno:'ALBUM #'+a.no}</span>
     <p class="ttl">${esc(a.t)}</p>
     <p class="date">${a.d}</p>
-    <details><summary>曲目（${a.tr.length}曲）</summary><ol class="tracks">${a.tr.map(t=>trackLi(t, (a.best?'BEST #'+a.bno:'ALBUM #'+a.no)+' '+a.t)).join('')}</ol></details>
+    <details open><summary>曲目（${a.tr.length}曲）</summary><ol class="tracks">${a.tr.map(t=>trackLi(t, (a.best?'BEST #'+a.bno:'ALBUM #'+a.no)+' '+a.t)).join('')}</ol></details>
     ${a.n?`<p class="note">${esc(a.n)}</p>`:''}
   </div>`).join('');
 
@@ -349,7 +349,7 @@ document.getElementById('single-cols').innerHTML = allSingles.map(s=>{
     <span class="tag">${tag}</span>
     <p class="ttl">${esc(s.t)}</p>
     <p class="date">${s.d}</p>
-    <details><summary>曲目（${s.tr.length}曲）</summary><ol class="tracks">${s.tr.map(t=>trackLi(t, ctx)).join('')}</ol></details>
+    <details open><summary>曲目（${s.tr.length}曲）</summary><ol class="tracks">${s.tr.map(t=>trackLi(t, ctx)).join('')}</ol></details>
     ${isD?`<p class="note">${esc(s.note)}</p>`:''}
   </div>`;
 }).join('');
@@ -364,7 +364,7 @@ document.getElementById('video-cols').innerHTML = videos.slice().sort((a,b)=>b.d
     ${v.lim?`<p class="note"><b>初回限定盤／形態:</b> ${esc(v.lim)}</p>`:''}
     ${v.disc?`<p class="note"><b>ディスク構成:</b> ${esc(v.disc)}</p>`:''}
     ${v.note?`<p class="note">${esc(v.note)}</p>`:''}
-    ${hasTr?`<details><summary>収録曲（${v.tr.length}曲）</summary><ol class="tracks">${v.tr.map(t=>renderTrack(t, '', false)).join('')}</ol></details>`:''}
+    ${hasTr?`<details open><summary>収録曲（${v.tr.length}曲）</summary><ol class="tracks">${v.tr.map(t=>renderTrack(t, '', false)).join('')}</ol></details>`:''}
   </div>`;
 }).join('');
 
