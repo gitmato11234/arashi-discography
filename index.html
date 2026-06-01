@@ -68,6 +68,8 @@
     color:var(--accent2); font-size:.7rem; font-weight:700; font-variant-numeric:tabular-nums;
   }
   ol.tracks li .ex{color:#b0651f; font-size:.7rem; font-weight:600;}
+  ol.tracks li .mem{color:#1f8a70; font-size:.7rem; font-weight:700;}
+  ol.tracks li .unit{color:#8a4f9e; font-size:.7rem; font-weight:700;}
   .note{margin:10px 0 0; font-size:.72rem; color:var(--sub); line-height:1.5;
     background:#f6f9fc; border-radius:7px; padding:7px 9px;}
   .vid .ttl{font-size:.95rem;}
@@ -85,6 +87,7 @@
 <nav>
   <a href="#albums">アルバム</a>
   <a href="#singles">シングル</a>
+  <a href="#digital">配信限定</a>
   <a href="#videos">映像作品</a>
 </nav>
 
@@ -93,7 +96,7 @@
 <!-- ALBUMS -->
 <section id="albums">
   <h2 class="sec-head">アルバム <span class="count" id="album-count"></span></h2>
-  <p class="sec-note">★ボーナストラックや初回限定盤の差異は各カードの注釈に記載。<span style="color:#e0c376;">金色</span>＝ベストアルバム</p>
+  <p class="sec-note">注記の色 — <span style="color:#d98a3a;">橙＝盤・収録の差異</span>／<span style="color:#3fae93;">緑＝ソロ曲(メンバー名)</span>／<span style="color:#b07ac4;">紫＝ユニット曲</span>。<span style="color:#e0c376;">金色のカード</span>＝ベストアルバム</p>
   <div class="cols albums" id="album-cols"></div>
 </section>
 
@@ -102,6 +105,13 @@
   <h2 class="sec-head">シングル <span class="count" id="single-count"></span></h2>
   <p class="sec-note">表題曲＋カップリング曲。<span style="color:#d98a3a;">（限定/通常のみ）</span>＝特定の盤のみ収録。</p>
   <div class="cols singles" id="single-cols"></div>
+</section>
+
+<!-- DIGITAL SINGLES -->
+<section id="digital">
+  <h2 class="sec-head">配信限定シングル <span class="count" id="digital-count"></span></h2>
+  <p class="sec-note">CDではなく配信限定でリリースされた楽曲。最新順。</p>
+  <div class="cols" id="digital-cols"></div>
 </section>
 
 <!-- VIDEOS -->
@@ -126,16 +136,16 @@ const albums = [
   {no:4,t:"いざッ、Now",d:"2004-07-21",best:false,tr:["言葉より大切なもの","JAM","The Bubble","Thank you for my days","PIKA★★NCHI DOUBLE","keep a peaK(instrumental)","EYES WITH DELIGHT","RIGHT BACK TO YOU","RAINBOW","ハダシの未来","優しくって少しバカ","Dear My Friend","君だけを想ってる","チェックのマフラー","途中下車"],n:"初回限定盤はボーナスDVD(ARASHI Best5CLIPS)付き。CD収録曲は両盤同一。"},
   {no:5,t:"One",d:"2005-08-03",best:false,tr:["Overture","夏の名前","ROMANCE","Lai-Lai-Lai","Days","素晴らしき世界","サクラ咲ケ","Rain","いつかのSummer","W/ME","秘密","夢でいいから","Yes? No?",["風見鶏","通常盤のみ"]],n:"初回限定盤はDVD付き(風見鶏は非収録)。"},
   {no:6,t:"ARASHIC",d:"2006-07-05",best:false,tr:["WISH","ランナウェイ・トレイン","Raise Your Hands","きっと大丈夫","Ready To Fly","キャラメル・ソング","COOL & SOUL","旅立ちの朝","I Want Somebody","Secret Eyes","超²ありがとう","CARNIVAL NIGHT part2","シルバーリング",["LOVE PARADE","通常盤のみ"]],n:"初回限定盤はDVD付き(LOVE PARADEは非収録)。"},
-  {no:7,t:"Time",d:"2007-07-11",best:false,tr:["Oh Yeah!","Love so sweet","WAVE","We can make it!","Firefly","太陽の世界","Carry on","ROCK YOU","Cry for you","Love Situation","風","Be with you","LIFE","アオゾラペダル",["Everybody前進","通常盤のみ"],["Song for me","初回盤Disc2"],["Friendship","初回盤Disc2"],["虹","初回盤Disc2"],["Can't Let You Go","初回盤Disc2"],["Yabai-Yabai-Yabai","初回盤Disc2"]],n:"初回限定盤Disc2にソロ曲5曲を収録。"},
-  {no:8,t:'Dream "A" live',d:"2008-04-23",best:false,tr:['theme of Dream "A" live',"Move your body","Happiness","虹の彼方へ","Do my best","シリウス","Flashback","Dive into the future","声","My Answer","Life goes on","Step and Go","YOUR SONG",["Once Again","通常盤のみ"],["Hello Goodbye","初回盤Disc2"],["Gimmick Game","初回盤Disc2"],["Take me faraway","初回盤Disc2"],["Naked","初回盤Disc2"],["Hip Pop Boogie","初回盤Disc2"]],n:"初回限定盤Disc2にソロ曲5曲を収録。"},
-  {no:9,t:"僕の見ている風景",d:"2010-08-04",best:false,tr:["movin' on","マダ上ヲ","リフレイン","Troublemaker","T.A.B.O.O","サーカス","ギフト","Everything","Come back to me","マイガール","Magical Song","let me down","Monster","Don't stop","静かな夜に","むかえに行くよ","1992*4##111","空高く","kagerô","Summer Splash!"],n:"CD2枚組。盤による収録曲の差はなし。"},
+  {no:7,t:"Time",d:"2007-07-11",best:false,tr:["Oh Yeah!","Love so sweet","WAVE","We can make it!","Firefly","太陽の世界","Carry on","ROCK YOU","Cry for you","Love Situation","風","Be with you","LIFE","アオゾラペダル",["Everybody前進","通常盤のみ"],["Song for me","大野 ソロ／初回盤Disc2","mem"],["Friendship","相葉 ソロ／初回盤Disc2","mem"],["虹","二宮 ソロ／初回盤Disc2","mem"],["Can't Let You Go","櫻井 ソロ／初回盤Disc2","mem"],["Yabai-Yabai-Yabai","松本 ソロ／初回盤Disc2","mem"]],n:"初回限定盤Disc2にソロ曲5曲を収録。"},
+  {no:8,t:'Dream "A" live',d:"2008-04-23",best:false,tr:['theme of Dream "A" live',"Move your body","Happiness","虹の彼方へ","Do my best","シリウス","Flashback","Dive into the future","声","My Answer","Life goes on","Step and Go","YOUR SONG",["Once Again","通常盤のみ"],["Hello Goodbye","相葉 ソロ／初回盤Disc2","mem"],["Gimmick Game","二宮 ソロ／初回盤Disc2","mem"],["Take me faraway","大野 ソロ／初回盤Disc2","mem"],["Naked","松本 ソロ／初回盤Disc2","mem"],["Hip Pop Boogie","櫻井 ソロ／初回盤Disc2","mem"]],n:"初回限定盤Disc2にソロ曲5曲を収録。"},
+  {no:9,t:"僕の見ている風景",d:"2010-08-04",best:false,tr:["movin' on","マダ上ヲ","リフレイン","Troublemaker",["T.A.B.O.O","櫻井 ソロ","mem"],"サーカス","ギフト","Everything",["Come back to me","松本 ソロ","mem"],"マイガール",["Magical Song","相葉 ソロ","mem"],"let me down","Monster","Don't stop",["静かな夜に","大野 ソロ","mem"],"むかえに行くよ",["1992*4##111","二宮 ソロ","mem"],"空高く","kagerô","Summer Splash!"],n:"CD2枚組。盤による収録曲の差はなし。"},
   {no:10,t:"Beautiful World",d:"2011-07-06",best:false,tr:["Rock this","まだ見ぬ世界へ","Løve Rainbow","always","Shake it!","虹のカケラ〜no rain, no rainbow〜","Dear Snow","Hung up on","Joy","どこにでもある唄。","negai","Lotus","「じゃなくて」","morning light","To be free","このままもっと","果てない空","遠くまで",["エナジーソング〜絶好調超!!!!〜","セブンネット限定盤のみ"]],n:""},
-  {no:11,t:"Popcorn",d:"2012-10-31",best:false,tr:["Welcome to our party","駆け抜けろ！","ワイルド アット ハート","Face Down","We wanna funk, we need a funk","two","Waiting for you","楽園","旅は続くよ","それはやっぱり君でした","迷宮ラブソング","Your Eyes","Fly on Friday","Cosmos","証","Up to you"],n:""},
+  {no:11,t:"Popcorn",d:"2012-10-31",best:false,tr:["Welcome to our party","駆け抜けろ！","ワイルド アット ハート","Face Down",["We wanna funk, we need a funk","松本 ソロ","mem"],["two","大野 ソロ","mem"],"Waiting for you",["楽園","相葉 ソロ","mem"],"旅は続くよ",["それはやっぱり君でした","二宮 ソロ","mem"],"迷宮ラブソング","Your Eyes",["Fly on Friday","櫻井 ソロ","mem"],"Cosmos","証","Up to you"],n:""},
   {no:12,t:"LOVE",d:"2013-10-23",best:false,tr:["愛を歌おう","サヨナラのあとで","CONFUSION","Hit the floor","P・A・R・A・D・O・X","sugar and salt","Breathless","20825日目の曲","Rock Tonight","Endless Game","Calling","夜空への手紙","Dance in the dark","Starlight kiss","FUNKY","Tears"],n:"CD収録曲は両盤共通。初回限定盤はDVD付き。"},
   {no:13,t:"THE DIGITALIAN",d:"2014-10-22",best:false,tr:["Zero-G","Wonderful","Tell me why","Asterisk","Imaging Crazy","GUTS !","Disco Star","誰も知らない","TRAP","STAY GOLD","Bittersweet","メリークリスマス","キミの夢を見ていた","One Step","Hey Yeah!","Hope in the darkness",["Take Off!!!!!","通常盤のみ"]],n:"初回限定盤はDVD付き。"},
   {no:14,t:"Japonism",d:"2015-10-21",best:false,tr:["Sakura","心の空","君への想い","Don't you love me?","miyabi-night","三日月","Bolero!","Mr. FUNK","暁","青空の下、キミのとなり","Rolling days","イン・ザ・ルーム","マスカレード","MUSIC","伝えたいこと","Japonesque",["僕らがつないでいく","通常盤Disc2"],["the Deep End","通常盤Disc2"],["Make a wish","通常盤Disc2"],["ふるさと","通常盤Disc2"],["日本よいとこ摩訶不思議","よいとこ盤のみ"]],n:"初回限定盤はDVD付き。「よいとこ盤」は少年隊カバー＋トークを収録。"},
   {no:15,t:"Are You Happy?",d:"2016-10-26",best:false,tr:["DRIVE","I seek","Ups and Downs","青春ブギ","Sunshine","復活LOVE","Amore","Bad boy","WONDER-LOVE","また今日と同じ明日が来る","Daylight","愛を叫べ","Baby blue","Miles away","To my homies","Don't You Get It",["TWO TO TANGO","通常盤のみ"]],n:"初回限定盤はDVD付き。"},
-  {no:16,t:"「untitled」",d:"2017-10-18",best:false,tr:["Green Light","つなぐ","「未完」","Sugar","Power of the Paradise","ありのままで","風雲","I'll be there","抱擁","Pray","光","彼方へ","Song for you",["バズりNIGHT","通常盤Disc2"],["夜の影","通常盤Disc2"],["UB","通常盤Disc2"],["Come Back","通常盤Disc2"],["カンパイ・ソング","通常盤Disc2"]],n:"初回限定盤はDVD付き。Disc2はユニット曲＋ボーナストラック。"},
+  {no:16,t:"「untitled」",d:"2017-10-18",best:false,tr:["Green Light","つなぐ","「未完」","Sugar","Power of the Paradise","ありのままで","風雲","I'll be there","抱擁","Pray","光","彼方へ","Song for you",["バズりNIGHT","相葉・大野・櫻井 ユニット／通常盤Disc2","unit"],["夜の影","大野・二宮・松本 ユニット／通常盤Disc2","unit"],["UB","相葉・二宮 ユニット／通常盤Disc2","unit"],["Come Back","櫻井・松本 ユニット／通常盤Disc2","unit"],["カンパイ・ソング","通常盤Disc2"]],n:"初回限定盤はDVD付き。Disc2はユニット曲＋ボーナストラック(カンパイ・ソングは全員)。"},
   {no:17,t:"This is 嵐",d:"2020-11-03",best:false,tr:["SHOW TIME","Turning Up","I Can't Wait For Christmas","Whenever You Call","いつか秒針のあう頃","IN THE SUMMER","カイト","BRAVE","Party Starters","Do you... ?","The Music Never Ends",["Turning Up (R3HAB Remix)","初回限定盤のみ"],["A-RA-SHI : Reborn","初回限定盤のみ"],["a Day in Our Life : Reborn","初回限定盤のみ"],["One Love : Reborn","初回限定盤のみ"],["Love so sweet : Reborn","初回限定盤のみ"],["Face Down : Reborn","初回限定盤のみ"]],n:"初回限定盤はボーナスCD＋映像付き。"},
   {bno:1,t:"嵐 Single Collection 1999-2001",d:"2002-05-16",best:true,tr:["A・RA・SHI","明日に向かって","SUNRISE日本","HORIZON","台風ジェネレーション -Typhoon Generation-","明日に向かって吠えろ","感謝カンゲキ雨嵐","OK! ALL RIGHT! いい恋をしよう","君のために僕がいる","はなさない!","時代","恋はブレッキー"],n:"ポニーキャニオン時代のシングル・カップリング曲集。"},
   {bno:2,t:"5×5 THE BEST SELECTION OF 2002←2004",d:"2004-11-10",best:true,tr:["Hero","瞳の中のGalaxy","途中下車","RIGHT BACK TO YOU","PIKA★★NCHI DOUBLE","言葉より大切なもの","ハダシの未来","Lucky Man","Blue","とまどいながら","冬のニオイ","PIKA☆NCHI","眠らないカラダ","ナイスな心意気","a Day in Our Life",["La tormenta 2004","通常盤のみ"]],n:"新しい順に収録。"},
@@ -236,9 +246,23 @@ const videos = [
   {t:'ARASHI Anniversary Tour 5×20 FILM "Record of Memories"',d:"2022-09-15",k:"ライブ映画",x:"「5×20」ツアーを映画化(Blu-ray/UHD BD)。"}
 ];
 
+const digital = [
+  {t:"Turning Up",d:"2019-11-03",x:"嵐初の配信限定シングル。全編英語詞。デビュー20周年記念。"},
+  {t:"A-RA-SHI : Reborn",d:"2019-12-20",x:"Rebornシリーズ。デビュー曲「A・RA・SHI」の英語詞リアレンジ版。"},
+  {t:"Turning Up (R3HAB Remix)",d:"2020-01-24",x:"「Turning Up」のR3HABによるリミックス。"},
+  {t:"Love so sweet : Reborn",d:"2020-05-15",x:"Rebornシリーズ。2007年「Love so sweet」の英語詞リアレンジ版。"},
+  {t:"Face Down : Reborn",d:"2020-06-26",x:"Rebornシリーズ。2012年「Face Down」の英語詞リアレンジ版。"},
+  {t:"IN THE SUMMER",d:"2020-07-24",x:"配信限定。全編英語詞。"},
+  {t:"Whenever You Call",d:"2020-09-18",x:"配信限定。Bruno Mars＆D'Mile書き下ろし。全英語詞バラード。"},
+  {t:"Party Starters",d:"2020-10-30",x:"配信限定。英語詞。アルバム『This is 嵐』収録。"}
+];
+
 function esc(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
 function trackLi(t){
-  if(Array.isArray(t)) return `<li>${esc(t[0])} <span class="ex">（${esc(t[1])}）</span></li>`;
+  if(Array.isArray(t)){
+    const cls = (t[2]==='mem'||t[2]==='unit') ? t[2] : 'ex';
+    return `<li>${esc(t[0])} <span class="${cls}">（${esc(t[1])}）</span></li>`;
+  }
   return `<li>${esc(t)}</li>`;
 }
 
@@ -259,6 +283,14 @@ document.getElementById('single-cols').innerHTML = singles.slice().reverse().map
     <ol class="tracks">${s.tr.map(trackLi).join('')}</ol>
   </div>`).join('');
 
+document.getElementById('digital-cols').innerHTML = digital.slice().sort((a,b)=>b.d.localeCompare(a.d)).map(s=>`
+  <div class="card vid">
+    <span class="kind">DIGITAL</span>
+    <p class="ttl">${esc(s.t)}</p>
+    <p class="date">${s.d}</p>
+    <p class="desc">${esc(s.x)}</p>
+  </div>`).join('');
+
 document.getElementById('video-cols').innerHTML = videos.slice().sort((a,b)=>b.d.localeCompare(a.d)).map(v=>`
   <div class="card vid">
     <span class="kind">${esc(v.k)}</span>
@@ -269,6 +301,7 @@ document.getElementById('video-cols').innerHTML = videos.slice().sort((a,b)=>b.d
 
 document.getElementById('album-count').textContent = albums.length + '作';
 document.getElementById('single-count').textContent = singles.length + '作';
+document.getElementById('digital-count').textContent = digital.length + '作';
 document.getElementById('video-count').textContent = videos.length + '作';
 </script>
 </body>
