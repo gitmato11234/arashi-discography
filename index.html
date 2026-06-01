@@ -115,6 +115,11 @@
   .card details[open] summary::before{content:"▼ ";}
   .card details ol.tracks{margin-top:8px;}
   .dtag{font-size:.66rem; background:#e7d9f3; color:#7a3fa0; padding:2px 7px; border-radius:10px; margin-left:5px; font-weight:700;}
+  ol.tracks li.medleyhead{font-weight:700;}
+  .mtag{font-size:.64rem; background:#dceafe; color:#2c6fb3; padding:1px 7px; border-radius:9px; margin-left:6px; font-weight:700; white-space:nowrap;}
+  ol.medley{list-style:none; margin:6px 0 2px; padding-left:12px; border-left:2px dashed #b9c9d8;}
+  ol.medley li{font-size:.76rem; font-weight:400; color:#4a5b6b; padding:2px 0 2px 18px; position:relative; border:none;}
+  ol.medley li::before{content:"♪"; position:absolute; left:0; top:2px; color:#9bb0c4; font-size:.7rem; font-weight:400;}
   footer{text-align:center; color:#8aa6c2; font-size:.74rem; padding:20px;}
   footer a{color:#bcd3ea;}
 </style>
@@ -262,7 +267,7 @@ const videos = [
   {t:"ARASHI AROUND ASIA+ in DOME",d:"2007-10-17",k:"ライブ",lim:"初回盤と通常盤の違いはパッケージデザインのみ。",disc:"DVD2枚組（Disc1=29曲, Disc2=6曲）。",tr:["OVERTURE","A・RA・SHI","サクラ咲ケ","ハダシの未来","Lucky Man","COOL & SOUL (DOME'07 ver.)","I Want Somebody","a Day in Our Life","アオゾラペダル","秘密","Rain","La tormenta 2004","CARNIVAL NIGHT part2","きっと大丈夫","Love so sweet","涙の流れ星","We can make it!","Blue","Anti-Anti","Tell me what you wanna be?","RIGHT BACK TO YOU","PIKA☆NCHI","SUNRISE日本","明日に向かって吠えろ","EYES WITH DELIGHT","君のために僕がいる","PIKA★★NCHI DOUBLE","言葉より大切なもの","感謝カンゲキ雨嵐","Hero","いつまでも","ファイトソング","WISH","Love so sweet","A・RA・SHI"]},
   {t:"SUMMER TOUR 2007 FINAL Time -コトバノチカラ-",d:"2008-04-16",k:"ライブ",lim:"初回限定盤の明確な特典は未確認。Disc2に特典映像（MC、Hey! Say! JUMPコラボ、横浜公演追加曲）を収録。",disc:"DVD2枚組（約185分）。ツアー最終日(東京ドーム)を収録。",tr:["OVERTURE","Everybody前進","Di-Li-Li","きっと大丈夫","Oh Yeah!","Friendship","Can't Let You Go","時代","Yes? No?","CARNIVAL NIGHT part2","虹","太陽の世界","WAVE","Love Situation","a Day in Our Life","ハダシの未来","Hero","Yabai-Yabai-Yabai","Song for me","Cry for you","言葉より大切なもの","感謝カンゲキ雨嵐","君のために僕がいる","PIKA★★NCHI DOUBLE","A・RA・SHI","サクラ咲ケ","Be with you","Happiness","We can make it!","ファイトソング","WISH","Love so sweet","Future","ROCK YOU","NA! NA! NA!!"]},
   {t:"ARASHI AROUND ASIA 2008 in TOKYO",d:"2009-03-25",k:"ライブ",lim:"初回プレスはクリアジャケット仕様。",disc:"DVD2枚組（Disc1=本編19曲＋特典『ARASHI'S FIGHT IN KOKURITSU』, Disc2=20曲）。",tr:["OVERTURE","Love so sweet","Oh Yeah!","きっと大丈夫","La tormenta 2004","Happiness","ハダシの未来","アオゾラペダル","Hello Goodbye","素晴らしき世界","とまどいながら","Still...","Lucky Man","Take me faraway","虹","スマイル","WAVE","CARNIVAL NIGHT part2","風の向こうへ","Re(mark)able","truth","Step and Go","a Day in Our Life","Tell me what you wanna be?","イチオクノホシ","シリウス","Hip Pop Boogie","theme of Dream \"A\" live","A・RA・SHI","PIKA★★NCHI DOUBLE","明日に向かって吠えろ","One Love","感謝カンゲキ雨嵐","ファイトソング","風","言葉より大切なもの","サクラ咲ケ","WISH","五里霧中"]},
-  {t:"ARASHI Anniversary Tour 5×10",d:"2010-04-07",k:"ライブ",lim:"",disc:"DVD2枚組（Disc1=29曲, Disc2=7曲＋特典ダイジェスト）。デビュー10周年記念ツアー。",tr:["感謝カンゲキ雨嵐","Step and Go","Lucky Man","We can make it!","風の向こうへ","Crazy Moon〜キミ・ハ・ムテキ〜","PIKA☆NCHI","HORIZON","DANGAN-LINER","アレルギー","ココロチラリ","CARNIVAL NIGHT part2","言葉より大切なもの","Everything","瞳の中のGalaxy","アオゾラペダル","台風ジェネレーション -Typhoon Generation-","曇りのち、快晴","a Day in Our Life","Oh Yeah!","ハダシの未来","Beautiful days","とまどいながら","WISH","Attack it!","truth","明日の記憶","ARASHI 1999-2009 メドレー","5×10","PIKA★★NCHI DOUBLE","明日に向かって","できるだけ","One Love","ファイトソング","五里霧中","A・RA・SHI"]},
+  {t:"ARASHI Anniversary Tour 5×10",d:"2010-04-07",k:"ライブ",lim:"",disc:"DVD2枚組（Disc1=29曲, Disc2=7曲＋特典ダイジェスト）。デビュー10周年記念ツアー。",tr:["感謝カンゲキ雨嵐","Step and Go","Lucky Man","We can make it!","風の向こうへ","Crazy Moon〜キミ・ハ・ムテキ〜","PIKA☆NCHI","HORIZON","DANGAN-LINER","アレルギー","ココロチラリ","CARNIVAL NIGHT part2","言葉より大切なもの","Everything","瞳の中のGalaxy","アオゾラペダル","台風ジェネレーション -Typhoon Generation-","曇りのち、快晴","a Day in Our Life","Oh Yeah!","ハダシの未来","Beautiful days","とまどいながら","WISH","Attack it!","truth","明日の記憶",{m:"ARASHI 1999-2009 メドレー",s:["A・RA・SHI","SUNRISE日本","君のために僕がいる","時代","ナイスな心意気","PIKA☆NCHI","とまどいながら","言葉より大切なもの","Hero","サクラ咲ケ","WISH","きっと大丈夫","Love so sweet","Happiness","Believe"]},"5×10","PIKA★★NCHI DOUBLE","明日に向かって","できるだけ","One Love","ファイトソング","五里霧中","A・RA・SHI"]},
   {t:'ARASHI 10-11 TOUR "Scene" STADIUM',d:"2011-01-26",k:"ライブ",lim:"初回限定盤はデジパック＋44Pライブフォトブック。通常盤はトールケース＋12Pブックレット。",disc:"DVD2枚組（Disc1=24曲, Disc2=20曲）。",tr:["Overture","movin' on","揺らせ、今を","Troublemaker","Happiness","Attack it!","Everything",["1992*4##111","二宮 ソロ","mem"],"ROCK YOU","きっと大丈夫","ハダシの未来","a Day in Our Life","Summer Splash!",["静かな夜に","大野 ソロ","mem"],"むかえに行くよ","season","Hero",["T.A.B.O.O","櫻井 ソロ","mem"],"let me down","kagerô","Oh Yeah!","Lucky Man","One Love","ユカイツーカイ怪物くん","リフレイン","ギフト","マイガール",["Come back to me","松本 ソロ","mem"],["Magical Song","相葉 ソロ","mem"],"PIKA★★NCHI DOUBLE","Love so sweet","言葉より大切なもの","Believe","サーカス","Monster","To be free","空高く","Still...","ファイトソング","Beautiful days","サクラ咲ケ","感謝カンゲキ雨嵐","Løve Rainbow"]},
   {t:'ARASHI 10-11 TOUR "Scene" DOME+',d:"2011-06-15",k:"ライブ",lim:"初回限定盤はDVD3枚組（306分）＋『嵐の強化合宿』48Pブックレット・特典映像追加。通常盤はDVD2枚組（210分）。Blu-rayあり。",disc:"本編Disc1=28曲, Disc2=12曲。",tr:["Overture","movin' on","Løve Rainbow","Troublemaker","Attack it!","Everything",["T.A.B.O.O","櫻井 ソロ","mem"],"let me down","マダ上ヲ","kagerô","Oh Yeah!",["静かな夜に","大野 ソロ","mem"],["1992*4##111","二宮 ソロ","mem"],"CARNIVAL NIGHT part2","One Love","ハダシの未来","ファイトソング","ユカイツーカイ怪物くん","Don't stop","リフレイン","Dear Snow","タイムカプセル",["Come back to me","松本 ソロ","mem"],["Magical Song","相葉 ソロ","mem"],"PIKA★★NCHI DOUBLE","Love so sweet","言葉より大切なもの","Believe","サーカス","Monster","To be free","空高く","Summer Splash!","きっと大丈夫","Happiness","マイガール","果てない空","サクラ咲ケ","Still..."]},
   {t:"ARASHI LIVE TOUR Beautiful World",d:"2012-05-23",k:"ライブ",lim:"初回限定盤はDVD3枚組デジパック＋48P歌詞ブック＋『嵐のワクワク学校』DVD(Disc3)。通常盤はDVD2枚組＋ライブポスター。",disc:"Disc1=20曲, Disc2=22曲。",tr:["Overture","Believe","Oh Yeah!","言葉より大切なもの","A・RA・SHI","虹のカケラ〜no rain, no rainbow〜","Løve Rainbow","Summer Splash!","ハダシの未来","Crazy Moon〜キミ・ハ・ムテキ〜","Lucky Man","Shake it!","明日の記憶","僕が僕のすべて","Hero","「じゃなくて」","このままもっと","Everybody前進","きっと大丈夫","Happiness","Rock this","always","Lotus","Beautiful days","Hung up on","どこにでもある唄。","Attack it!","morning light","まだ見ぬ世界へ","a Day in Our Life","Troublemaker","Love so sweet","サクラ咲ケ","果てない空","遠くまで","感謝カンゲキ雨嵐","夏の名前","ファイトソング","CARNIVAL NIGHT part2","One Love","五里霧中","5×10"]},
@@ -274,7 +279,7 @@ const videos = [
   {t:"ARASHI LIVE TOUR 2014 THE DIGITALIAN",d:"2015-07-29",k:"ライブ",lim:"初回限定盤はデジパック＋特典Disc3「スッピンデジタリアン」＋48Pフォトブック。通常盤はDisc1に定点カメラ映像2曲を追加収録。",disc:"初回=3枚組／通常=2枚組。",tr:["Asterisk","Take Off!!!!!","Wonderful","Welcome to our party","Bittersweet",["Disco Star","相葉 ソロ","mem"],["Hey Yeah!","櫻井 ソロ","mem"],"One Step","Oh Yeah!","ハダシの未来","Love Wonderland","WISH",["メリークリスマス","二宮 ソロ","mem"],["STAY GOLD","松本 ソロ","mem"],["Imaging Crazy","大野 ソロ","mem"],"Tell me why","TRAP","Troublemaker（DIGITALIAN Remix）","Lucky Man（DIGITALIAN Remix）","Hope in the darkness","Zero-G","A・RA・SHI","SUNRISE日本","君のために僕がいる","a Day in Our Life","言葉より大切なもの","サクラ咲ケ","Love so sweet","Happiness","One Love","Monster","迷宮ラブソング","Calling","誰も知らない","GUTS !","キミの夢を見ていた"]},
   {t:"ARASHI BLAST in Miyagi",d:"2016-01-01",k:"ライブ",lim:"初回プレス仕様はデジパック＋48Pフォトブック＋「BLAST」レターセット。DVD/BD各初回・通常で計4種。",disc:"DVD2枚組（Disc1=20曲, Disc2=13曲）。",tr:["Overture","ワイルド アット ハート","PIKA☆NCHI","Happiness","Troublemaker","Løve Rainbow","青空の下、キミのとなり",["「じゃなくて」","相葉 ソロ","mem"],["20825日目の曲","二宮 ソロ","mem"],"Oh Yeah!","言葉より大切なもの","Zero-G","感謝カンゲキ雨嵐","Love so sweet","きっと大丈夫","Bittersweet","ハダシの未来（お祭りver.）","CARNIVAL NIGHT part2（お祭りver.）","GUTS !","ファイトソング",["Come back to me","松本 ソロ","mem"],["Hip Pop Boogie Chapter II","櫻井 ソロ","mem"],["two","大野 ソロ","mem"],"Endless Game","Sakura","PIKA★★NCHI DOUBLE","迷宮ラブソング","サクラ咲ケ","A・RA・SHI","果てない空","愛を叫べ","エナジーソング〜絶好調超!!!!〜","ユメニカケル"]},
   {t:"ARASHI LIVE TOUR 2015 Japonism",d:"2016-08-24",k:"ライブ",lim:"初回プレス仕様はデジパック＋60Pフォトブック。DVD/BD各初回・通常で計4種。",disc:"DVD2枚組（Disc1=22曲, Disc2=10曲）。",tr:["Overture","Sakura","miyabi-night","ワイルド アット ハート","Troublemaker","青空の下、キミのとなり","Make a wish",["MUSIC","二宮 ソロ","mem"],["Don't you love me?","松本 ソロ","mem"],"イン・ザ・ルーム","マスカレード","Happiness","ハダシの未来","GUTS!","愛を叫べ","日本よいとこ摩訶不思議","君への想い",["Rolling days","櫻井 ソロ","mem"],["Mr.FUNK","相葉 ソロ","mem"],"FUNKY","Bolero!",["暁","大野 ソロ","mem"],"Japonesque","心の空","SUNRISE日本","Oh Yeah!","Believe","僕らがつないでいく","ユメニカケル","Love so sweet","A・RA・SHI","感謝カンゲキ雨嵐"]},
-  {t:"ARASHI LIVE TOUR 2016-2017 Are You Happy?",d:"2017-05-31",k:"ライブ",lim:"初回限定盤は特典Disc3・4に横浜『Japonism Show』を収録。通常盤は特典Disc3にドキュメンタリー『〜アユハピ〜』。DVD/BD各で計4種。",disc:"本編Disc1＋Disc2。初回=4枚組／通常=3枚組。東京ドーム公演。",tr:["Overture","Ups and Downs","supersonic","I seek","Oh Yeah!","Love so sweet","Sunshine","To my homies","DRIVE","Step and Go","Don't You Get It","Bad boy","TWO TO TANGO","復活LOVE","青空の下、キミのとなり","ファイトソング","Power of the Paradise","Baby blue","Miles away","果てない空","WONDER-LOVE","また今日と同じ明日が来る","Amore","青春ブギ","Happy Medley","a Day in Our Life","五里霧中","エナジーソング〜絶好調超!!!!〜","Daylight"]},
+  {t:"ARASHI LIVE TOUR 2016-2017 Are You Happy?",d:"2017-05-31",k:"ライブ",lim:"初回限定盤は特典Disc3・4に横浜『Japonism Show』を収録。通常盤は特典Disc3にドキュメンタリー『〜アユハピ〜』。DVD/BD各で計4種。",disc:"本編Disc1＋Disc2。初回=4枚組／通常=3枚組。東京ドーム公演。",tr:["Overture","Ups and Downs","supersonic","I seek","Oh Yeah!","Love so sweet","Sunshine","To my homies","DRIVE","Step and Go","Don't You Get It","Bad boy","TWO TO TANGO","復活LOVE","青空の下、キミのとなり","ファイトソング","Power of the Paradise","Baby blue","Miles away","果てない空","WONDER-LOVE","また今日と同じ明日が来る","Amore","青春ブギ",{m:"Happy Medley",s:["Happiness","きっと大丈夫","A・RA・SHI","Troublemaker","Løve Rainbow","言葉より大切なもの","ワイルド アット ハート","感謝カンゲキ雨嵐","愛を叫べ"]},"a Day in Our Life","五里霧中","エナジーソング〜絶好調超!!!!〜","Daylight"]},
   {t:"ARASHI LIVE TOUR 2017-2018 「untitled」",d:"2018-06-13",k:"ライブ",lim:"初回限定盤は特典『嵐の嵐会』を収録。通常盤はマルチアングル＋京セラ大阪のダブルアンコール映像。DVD/BD各で計4種。",disc:"DVD初回=3枚組／通常=4枚組、Blu-ray各2枚組。東京ドーム公演。",tr:["Overture","Green Light","I'll be there","風雲","Attack it!","Happiness","Junction -出逢い-","UB","Come Back","夜の影","バズりNIGHT","Junction -愛-","つなぐ","抱擁","お気に召すまま","Bittersweet","GUTS !","Doors 〜勇気の軌跡〜","Sugar","NOW or NEVER","Junction -別れ-","Pray","光","君のために僕がいる","PIKA★★NCHI DOUBLE","ハダシの未来","Believe","Monster","A・RA・SHI","Junction -未来-","Song for you","「未完」","ワイルド アット ハート","サクラ咲ケ","彼方へ","カンパイ・ソング"]},
   {t:"ARASHI Anniversary Tour 5×20",d:"2020-09-30",k:"ライブ",lim:"通常盤とファンクラブ会員限定盤。限定盤は特典Disc3・4に2018年12月東京ドーム公演を追加。通常盤初回プレスは72Pフォトブック。",disc:"Disc1＋Disc2（マルチアングル4曲含む）。デビュー20周年記念ツアー。",tr:["Overture","感謝カンゲキ雨嵐","Oh Yeah!","Step and Go","言葉より大切なもの","Find The Answer","I'll be there","迷宮ラブソング","La tormenta 2004","Breathless","Everything","果てない空","アオゾラペダル","復活LOVE","Believe","Lucky Man","夏疾風","BRAVE","COOL & SOUL","マイガール","One Love","Face Down","つなぐ","Crazy Moon〜キミ・ハ・ムテキ〜","Sakura","truth","A・RA・SHI","a Day in Our Life","ハダシの未来","サクラ咲ケ","きっと大丈夫","Monster","Troublemaker","ワイルド アット ハート","GUTS !","君のうた","5×20","ファイトソング","エナジーソング〜絶好調超!!!!〜","PIKA★★NCHI DOUBLE","Love so sweet","Happiness"]},
   {t:"アラフェス2020 at 国立競技場",d:"2021-07-28",k:"ライブ",lim:"初回プレス仕様は三方背＆デジパック＋72Pフォトブック。通常盤はリーフレットのみ。DVD/BD各で計4種。",disc:"2枚組（PART1/PART2）。2020年11月3日 国立競技場 配信ライブ。",tr:["Overture","Love so sweet","五里霧中","言葉より大切なもの","PIKA★★NCHI DOUBLE","Love Situation","Summer Splash!","ファイトソング","Shake it!","虹","Rain","One Love: Reborn","Still...","僕が僕のすべて","ユメニカケル","T.A.B.O.O","Disco Star","希望の証","Count on me","時計じかけのアンブレラ","P・A・R・A・D・O・X","Lucky Man","エナジーソング〜絶好調超!!!!〜","5×10","5×20","Happiness","CARNIVAL NIGHT part2","BRAVE","君のうた","素晴らしき世界","Sugar","a Day in Our Life: Reborn","IN THE SUMMER","Whenever You Call","Monster","season","truth","カイト","A・RA・SHI","感謝カンゲキ雨嵐","Turning Up","カンパイ・ソング"]},
@@ -299,23 +304,34 @@ function esc(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g
 
 const SEARCH = [];
 let _tid = 0;
-function trackLi(t, ctx){
+function renderTrack(t, ctx, doIndex){
+  // メドレー: {m:"メドレー名", s:[内訳...]}
+  if(t && typeof t==='object' && !Array.isArray(t) && t.m){
+    const inner = t.s.map(name=>{
+      if(doIndex){ const iid='t'+(_tid++); SEARCH.push({name, ctx:ctx+'／'+t.m, id:iid}); return `<li id="${iid}">${esc(name)}</li>`; }
+      return `<li>${esc(name)}</li>`;
+    }).join('');
+    const id='t'+(_tid++);
+    if(doIndex) SEARCH.push({name:t.m, ctx, id});
+    return `<li id="${id}" class="medleyhead">${esc(t.m)}<span class="mtag">メドレー ${t.s.length}曲</span><ol class="medley">${inner}</ol></li>`;
+  }
   const name = Array.isArray(t) ? t[0] : t;
   const id = 't' + (_tid++);
-  SEARCH.push({name, ctx, id});
+  if(doIndex) SEARCH.push({name, ctx, id});
   if(Array.isArray(t)){
     const cls = (t[2]==='mem'||t[2]==='unit') ? t[2] : 'ex';
     return `<li id="${id}">${esc(t[0])} <span class="${cls}">（${esc(t[1])}）</span></li>`;
   }
   return `<li id="${id}">${esc(t)}</li>`;
 }
+function trackLi(t, ctx){ return renderTrack(t, ctx, true); }
 
 document.getElementById('album-cols').innerHTML = albums.slice().sort((a,b)=>b.d.localeCompare(a.d)).map(a=>`
   <div class="card${a.best?' best':''}">
     <span class="tag${a.best?' best':''}">${a.best?'BEST #'+a.bno:'ALBUM #'+a.no}</span>
     <p class="ttl">${esc(a.t)}</p>
     <p class="date">${a.d}</p>
-    <ol class="tracks">${a.tr.map(t=>trackLi(t, (a.best?'BEST #'+a.bno:'ALBUM #'+a.no)+' '+a.t)).join('')}</ol>
+    <details><summary>曲目（${a.tr.length}曲）</summary><ol class="tracks">${a.tr.map(t=>trackLi(t, (a.best?'BEST #'+a.bno:'ALBUM #'+a.no)+' '+a.t)).join('')}</ol></details>
     ${a.n?`<p class="note">${esc(a.n)}</p>`:''}
   </div>`).join('');
 
@@ -333,7 +349,7 @@ document.getElementById('single-cols').innerHTML = allSingles.map(s=>{
     <span class="tag">${tag}</span>
     <p class="ttl">${esc(s.t)}</p>
     <p class="date">${s.d}</p>
-    <ol class="tracks">${s.tr.map(t=>trackLi(t, ctx)).join('')}</ol>
+    <details><summary>曲目（${s.tr.length}曲）</summary><ol class="tracks">${s.tr.map(t=>trackLi(t, ctx)).join('')}</ol></details>
     ${isD?`<p class="note">${esc(s.note)}</p>`:''}
   </div>`;
 }).join('');
@@ -348,10 +364,7 @@ document.getElementById('video-cols').innerHTML = videos.slice().sort((a,b)=>b.d
     ${v.lim?`<p class="note"><b>初回限定盤／形態:</b> ${esc(v.lim)}</p>`:''}
     ${v.disc?`<p class="note"><b>ディスク構成:</b> ${esc(v.disc)}</p>`:''}
     ${v.note?`<p class="note">${esc(v.note)}</p>`:''}
-    ${hasTr?`<details><summary>収録曲（${v.tr.length}曲）</summary><ol class="tracks">${v.tr.map(t=>{
-      if(Array.isArray(t)){ const cls=(t[2]==='mem'||t[2]==='unit')?t[2]:'ex'; return `<li>${esc(t[0])} <span class="${cls}">（${esc(t[1])}）</span></li>`; }
-      return `<li>${esc(t)}</li>`;
-    }).join('')}</ol></details>`:''}
+    ${hasTr?`<details><summary>収録曲（${v.tr.length}曲）</summary><ol class="tracks">${v.tr.map(t=>renderTrack(t, '', false)).join('')}</ol></details>`:''}
   </div>`;
 }).join('');
 
@@ -368,6 +381,7 @@ let hlTimer = null;
 function jumpTo(id){
   const el = document.getElementById(id);
   if(!el) return;
+  let d = el.closest('details'); while(d){ d.open = true; d = d.parentElement && d.parentElement.closest('details'); }
   el.scrollIntoView({behavior:'smooth', block:'center'});
   const card = el.closest('.card');
   clearTimeout(hlTimer);
