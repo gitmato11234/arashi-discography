@@ -120,6 +120,7 @@
   ol.medley{list-style:none; margin:6px 0 2px; padding-left:12px; border-left:2px dashed #b9c9d8;}
   ol.medley li{font-size:.76rem; font-weight:400; color:#4a5b6b; padding:2px 0 2px 18px; position:relative; border:none;}
   ol.medley li::before{content:"♪"; position:absolute; left:0; top:2px; color:#9bb0c4; font-size:.7rem; font-weight:400;}
+  ol.tracks li .tie{font-size:.66rem; background:#eef1f4; color:#6b7b8c; padding:1px 8px; border-radius:9px; margin-left:7px; font-weight:600; white-space:nowrap;}
   footer{text-align:center; color:#8aa6c2; font-size:.74rem; padding:20px;}
   footer a{color:#bcd3ea;}
 </style>
@@ -304,7 +305,66 @@ function esc(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g
 
 const SEARCH = [];
 let _tid = 0;
-function renderTrack(t, ctx, doIndex){
+
+// タイアップ情報（曲名 → タイアップ）
+const TIEUPS = {
+  "A・RA・SHI":"1999バレーボールW杯イメージソング",
+  "SUNRISE日本":"フジ系「プロ野球ニュース2000」テーマ",
+  "時代":"日テレ系ドラマ「金田一少年の事件簿」主題歌",
+  "a Day in Our Life":"TBS系ドラマ「木更津キャッツアイ」主題歌",
+  "PIKA☆NCHI":"映画「ピカ☆ンチ」主題歌",
+  "ハダシの未来":"日本コカ・コーラ CMソング",
+  "言葉より大切なもの":"TBS系ドラマ「Stand Up!!」主題歌",
+  "瞳の中のGalaxy":"テレ朝系ドラマ「南くんの恋人」主題歌",
+  "Hero":"日テレ系「アテネ五輪」テーマソング",
+  "サクラ咲ケ":"城南予備校 CMソング",
+  "WISH":"TBS系ドラマ「花より男子」主題歌",
+  "きっと大丈夫":"ハウスウェルネス「C1000」CMソング",
+  "アオゾラペダル":"映画「ハチミツとクローバー」主題歌",
+  "Love so sweet":"TBS系ドラマ「花より男子2」主題歌",
+  "Happiness":"TBS系ドラマ「山田太郎ものがたり」主題歌",
+  "Step and Go":"フジ系「GRA」EDテーマ",
+  "One Love":"映画「花より男子F」主題歌",
+  "truth":"テレ朝系ドラマ「魔王」主題歌",
+  "風の向こうへ":"日テレ系「北京五輪」テーマソング",
+  "Beautiful days":"TBS系ドラマ「流星の絆」主題歌",
+  "明日の記憶":"日テレ系ドラマ「ザ・クイズショウ」主題歌",
+  "Crazy Moon〜キミ・ハ・ムテキ〜":"コーセー「エスプリーク」CMソング",
+  "Everything":"au by KDDI CMソング",
+  "マイガール":"テレ朝系ドラマ「マイガール」主題歌",
+  "Troublemaker":"TBS系ドラマ「特上カバチ!!」主題歌",
+  "Monster":"日テレ系ドラマ「怪物くん」主題歌",
+  "Løve Rainbow":"フジ系ドラマ「夏の恋は虹色に輝く」主題歌",
+  "Dear Snow":"映画「大奥」主題歌",
+  "果てない空":"日テレ系ドラマ「フリーター、家を買う。」主題歌",
+  "迷宮ラブソング":"フジ系ドラマ「謎解きはディナーのあとで」主題歌",
+  "ワイルド アット ハート":"フジ系ドラマ「ラッキーセブン」主題歌",
+  "Face Down":"フジ系ドラマ「鍵のかかった部屋」主題歌",
+  "Your Eyes":"日テレ系ドラマ「三毛猫ホームズの推理」主題歌",
+  "Calling":"フジ系ドラマ「ラストホープ」主題歌",
+  "Breathless":"映画「プラチナデータ」主題歌",
+  "Endless Game":"フジ系ドラマ「家族ゲーム」主題歌",
+  "Bittersweet":"フジ系ドラマ「失恋ショコラティエ」主題歌",
+  "GUTS !":"日テレ系ドラマ「弱くても勝てます」主題歌",
+  "誰も知らない":"テレ朝系ドラマ「死神くん」主題歌",
+  "Sakura":"TBS系ドラマ「ウロボロス」主題歌",
+  "青空の下、キミのとなり":"フジ系ドラマ「ようこそ、わが家へ」主題歌",
+  "愛を叫べ":"リクルート「ゼクシィ」CMソング",
+  "復活LOVE":"NTTドコモ「dヒッツ」CMソング",
+  "I seek":"日テレ系ドラマ「世界一難しい恋」主題歌",
+  "Daylight":"TBS系ドラマ「99.9-刑事専門弁護士-」主題歌",
+  "Power of the Paradise":"日テレ系「リオ五輪」テーマソング",
+  "I'll be there":"フジ系ドラマ「貴族探偵」主題歌",
+  "つなぐ":"映画「忍びの国」主題歌",
+  "Doors 〜勇気の軌跡〜":"日テレ系ドラマ「先に生まれただけの僕」主題歌",
+  "Find The Answer":"TBS系ドラマ「99.9 SEASONⅡ」主題歌",
+  "夏疾風":"ABC「夏の高校野球」応援ソング",
+  "君のうた":"テレ朝系ドラマ「僕とシッポと神楽坂」主題歌",
+  "BRAVE":"日テレ系「ラグビーW杯2019」イメージソング",
+  "カイト":"2020東京五輪・パラ NHK放送テーマソング"
+};
+
+function renderTrack(t, ctx, doIndex, showTie){
   // メドレー: {m:"メドレー名", s:[内訳...]}
   if(t && typeof t==='object' && !Array.isArray(t) && t.m){
     const inner = t.s.map(name=>{
@@ -318,13 +378,16 @@ function renderTrack(t, ctx, doIndex){
   const name = Array.isArray(t) ? t[0] : t;
   const id = 't' + (_tid++);
   if(doIndex) SEARCH.push({name, ctx, id});
+  const tie = (showTie && TIEUPS[name]) ? TIEUPS[name] : '';
+  if(doIndex && tie) SEARCH.push({name:tie, ctx:ctx+'／'+name, id});
+  const tieHtml = tie ? ` <span class="tie">${esc(tie)}</span>` : '';
   if(Array.isArray(t)){
     const cls = (t[2]==='mem'||t[2]==='unit') ? t[2] : 'ex';
-    return `<li id="${id}">${esc(t[0])} <span class="${cls}">（${esc(t[1])}）</span></li>`;
+    return `<li id="${id}">${esc(t[0])} <span class="${cls}">（${esc(t[1])}）</span>${tieHtml}</li>`;
   }
-  return `<li id="${id}">${esc(t)}</li>`;
+  return `<li id="${id}">${esc(t)}${tieHtml}</li>`;
 }
-function trackLi(t, ctx){ return renderTrack(t, ctx, true); }
+function trackLi(t, ctx){ return renderTrack(t, ctx, true, true); }
 
 document.getElementById('album-cols').innerHTML = albums.slice().sort((a,b)=>b.d.localeCompare(a.d)).map(a=>`
   <div class="card${a.best?' best':''}">
@@ -366,7 +429,7 @@ document.getElementById('video-cols').innerHTML = videos.slice().sort((a,b)=>b.d
     ${v.lim?`<p class="note"><b>初回限定盤／形態:</b> ${esc(v.lim)}</p>`:''}
     ${v.disc?`<p class="note"><b>ディスク構成:</b> ${esc(v.disc)}</p>`:''}
     ${v.note?`<p class="note">${esc(v.note)}</p>`:''}
-    ${hasTr?`<details open><summary>収録曲（${v.tr.length}曲）</summary><ol class="tracks">${v.tr.map(t=>renderTrack(t, '映像作品／'+v.t, true)).join('')}</ol></details>`:''}
+    ${hasTr?`<details open><summary>収録曲（${v.tr.length}曲）</summary><ol class="tracks">${v.tr.map(t=>renderTrack(t, '映像作品／'+v.t, true, false)).join('')}</ol></details>`:''}
   </div>`;
 }).join('');
 
