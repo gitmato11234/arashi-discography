@@ -354,17 +354,19 @@ document.getElementById('single-cols').innerHTML = allSingles.map(s=>{
   </div>`;
 }).join('');
 
-document.getElementById('video-cols').innerHTML = videos.slice().sort((a,b)=>b.d.localeCompare(a.d)).map(v=>{
+document.getElementById('video-cols').innerHTML = videos.slice().sort((a,b)=>b.d.localeCompare(a.d)).map((v,i)=>{
   const hasTr = v.tr && v.tr.length;
+  const vid = 'v'+i;
+  SEARCH.push({name:v.t, ctx:'映像作品', id:vid});
   return `
-  <div class="card vid">
+  <div class="card vid" id="${vid}">
     <span class="kind">${esc(v.k)}</span>
     <p class="ttl">${esc(v.t)}</p>
     <p class="date">${v.d}</p>
     ${v.lim?`<p class="note"><b>初回限定盤／形態:</b> ${esc(v.lim)}</p>`:''}
     ${v.disc?`<p class="note"><b>ディスク構成:</b> ${esc(v.disc)}</p>`:''}
     ${v.note?`<p class="note">${esc(v.note)}</p>`:''}
-    ${hasTr?`<details open><summary>収録曲（${v.tr.length}曲）</summary><ol class="tracks">${v.tr.map(t=>renderTrack(t, '', false)).join('')}</ol></details>`:''}
+    ${hasTr?`<details open><summary>収録曲（${v.tr.length}曲）</summary><ol class="tracks">${v.tr.map(t=>renderTrack(t, '映像作品／'+v.t, true)).join('')}</ol></details>`:''}
   </div>`;
 }).join('');
 
